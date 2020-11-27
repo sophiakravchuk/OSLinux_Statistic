@@ -92,4 +92,10 @@ void get_memory_info(struct task_manager_file_info* finfo, std::string file_path
 }
 
 
-
+void get_proc_state(struct task_manager_file_info* finfo, std::string file_path){
+    std::vector<std::string> key_words = {"State"};
+    std::map<std::string, std::string> mem_keys_map;
+    get_values_from_file(&mem_keys_map, key_words, file_path + "/status");
+   boost::algorithm::trim(mem_keys_map["State"]);
+    finfo->proc_state =  mem_keys_map["State"];
+}

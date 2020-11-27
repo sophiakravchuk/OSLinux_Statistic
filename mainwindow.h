@@ -18,14 +18,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    struct sorting_info sort_flags { {0, -1, -1, -1, -1, -1}, } ;
+    struct sorting_info sort_flags { {0, -1, -1, -1, -1, -1, -1}, } ;
 
     std::vector<struct task_manager_file_info> all_tasks_info;
     void update_table();
     QTimer* wind_timer;
+    void contextMenuEvent( QContextMenuEvent * e );
 
 
 private slots:
+
+    void slotKill();
 
     void on_myTable_sectionClicked(int index);
 
@@ -33,6 +36,9 @@ private slots:
 
 
 private:
+    std::string process_to_kill;
+    int pid_to_kill;
+    int updating_t;
     Ui::MainWindow *ui;
 
 };

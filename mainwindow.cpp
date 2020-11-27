@@ -1,4 +1,7 @@
 #include <QTimer>
+#include <QMenu>
+#include <QContextMenuEvent>
+#include <QMessageBox>
 #include <iostream>
 #include <vector>
 #include <stdio.h>
@@ -6,6 +9,7 @@
 #include <map>
 #include <fstream>
 #include <filesystem>
+#include <signal.h>
 
 #include <boost/algorithm/string/trim.hpp>
 
@@ -40,6 +44,7 @@ MainWindow::~MainWindow()
 void MainWindow::update_table() {
     int in = 0;
 
+        updating_t = 1;
         all_tasks_info.clear();
         long mem_total = get_mem_total();
         for(auto &p : std::filesystem::directory_iterator("/proc/")){
@@ -53,6 +58,7 @@ void MainWindow::update_table() {
             finfo.pid = stoi(filename);
             get_cpu_and_name(&finfo, file_path);
             get_memory_info(&finfo, file_path, mem_total);
+            get_proc_state(&finfo, file_path);
             all_tasks_info.push_back(finfo);
 
         }
@@ -68,7 +74,7 @@ void MainWindow::update_table() {
         /*add stuff inside the table view*/
             for(int i=0; i<ui->tableWidget->rowCount(); i++)
             {
-                for(int j=0; j<6; j++)
+                for(int j=0; j<7; j++)
                 {
                     QTableWidgetItem *pCell = ui->tableWidget->item(i, j);
                     if(!pCell)
@@ -84,22 +90,26 @@ void MainWindow::update_table() {
                 pCell1->setText(std::to_string(all_tasks_info[i].pid).c_str());
 
                 QTableWidgetItem *pCell2 = ui->tableWidget->item(i, 2);
-                std::string s = double_to_string_precision(all_tasks_info[i].cpu_usage, 1);
-                pCell2->setText((s + '%').c_str());
+                pCell2->setText(all_tasks_info[i].proc_state.c_str());
 
                 QTableWidgetItem *pCell3 = ui->tableWidget->item(i, 3);
-                std::string vm_s = memory_suitable_view(all_tasks_info[i].vm_size);
-                pCell3->setText(vm_s.c_str());
+                std::string s = double_to_string_precision(all_tasks_info[i].cpu_usage, 1);
+                pCell3->setText((s + '%').c_str());
 
                 QTableWidgetItem *pCell4 = ui->tableWidget->item(i, 4);
-                std::string pss_s = memory_suitable_view(all_tasks_info[i].pss);
-                pCell4->setText(pss_s.c_str());
+                std::string vm_s = memory_suitable_view(all_tasks_info[i].vm_size);
+                pCell4->setText(vm_s.c_str());
 
                 QTableWidgetItem *pCell5 = ui->tableWidget->item(i, 5);
-                pCell5->setText((std::to_string(all_tasks_info[i].mem_percentage) + " %").c_str());
+                std::string pss_s = memory_suitable_view(all_tasks_info[i].pss);
+                pCell5->setText(pss_s.c_str());
+
+                QTableWidgetItem *pCell6 = ui->tableWidget->item(i, 6);
+                pCell6->setText((std::to_string(all_tasks_info[i].mem_percentage) + " %").c_str());
 
             }
             ui->tableWidget->update();
+            updating_t = 0;
             wind_timer->start(1000);
             in++;
 
@@ -172,7 +182,20 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
     }
 
     else if (sort_flags.flags[2] != -1) {
-        if (!sort_flags.flags[2]) {
+        if (sort_flags.flags[2]) {
+            std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
+                    return finfo1.proc_state > finfo2.proc_state;
+                });
+            return;
+        } else {
+        std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
+                return finfo1.proc_state < finfo2.proc_state;
+            });
+        }
+    }
+
+    else if (sort_flags.flags[3] != -1) {
+        if (!sort_flags.flags[3]) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.cpu_usage > finfo2.cpu_usage;
                 });
@@ -185,8 +208,8 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
         }
     }
 
-    else if (sort_flags.flags[3]  != -1) {
-        if (!sort_flags.flags[3]) {
+    else if (sort_flags.flags[4]  != -1) {
+        if (!sort_flags.flags[4]) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.vm_size > finfo2.vm_size;
                 });
@@ -198,8 +221,8 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
         }
     }
 
-    else if (sort_flags.flags[4]  != -1) {
-        if (!sort_flags.flags[4] ) {
+    else if (sort_flags.flags[5]  != -1) {
+        if (!sort_flags.flags[5] ) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.pss > finfo2.pss;
                 });
@@ -211,8 +234,8 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
         }
     }
 
-    else if (sort_flags.flags[5] != -1) {
-        if (!sort_flags.flags[5]) {
+    else if (sort_flags.flags[6] != -1) {
+        if (!sort_flags.flags[6]) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.mem_percentage > finfo2.mem_percentage;
                 });
@@ -226,6 +249,77 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
 
     else {
         std::cerr << "Error in sort detection!!!" << std::endl;
+    }
+}
+
+
+
+void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
+    if(updating_t){
+        return;
+    }
+    int row = ui->tableWidget->selectionModel()->currentIndex().row();
+    if (row == -1){
+        return;
+    }
+    process_to_kill = all_tasks_info[row].process_name;
+    pid_to_kill = all_tasks_info[row].pid;
+    QAction *pKillProc = new QAction("Kill process",this);
+    connect(pKillProc,SIGNAL(triggered()),this,SLOT(slotKill()));
+
+    //
+    QMenu *pContextMenu = new QMenu( this);
+    pContextMenu->addAction(pKillProc);
+    //
+    if(updating_t){
+        delete pContextMenu;
+        pContextMenu = NULL;
+        return;
+    }
+    pContextMenu->exec( e->globalPos() );
+
+    delete pContextMenu;
+    pContextMenu = NULL;
+}
+
+void MainWindow::slotKill(){
+    std::string delete_message = "Do you really want to kill process: ";
+    delete_message += process_to_kill + " ?";
+    if (QMessageBox::warning(this,
+                             "Killing process",
+                             delete_message.c_str(),
+                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::No) {
+        /* If the answer is no* */
+        return;
+    } else {
+        for(auto finfo : all_tasks_info){
+            if (finfo.pid == pid_to_kill){
+                if (finfo.process_name != process_to_kill){
+                    QMessageBox::warning(this,
+                                                 "Killing process",
+                                                 "No such process found",
+                                                 QMessageBox::Ok);
+                    std::cout << "No such process found" << std::endl;
+                }
+                break;
+            }
+        }
+        if (pid_to_kill < 0){
+            QMessageBox::warning(this,
+                                         "Killing process",
+                                         "No such process found",
+                                         QMessageBox::Ok);
+            std::cout << "No such process found" << std::endl;
+        }
+        if(kill(pid_to_kill, SIGTERM)!=0){
+            QMessageBox::warning(this,
+                                         "Killing process",
+                                         "Cannot kill process",
+                                         QMessageBox::Ok);
+            std::cout << "Cannot kill process" << std::endl;
+        }
+
+
     }
 }
 

@@ -99,6 +99,11 @@
     </column>
     <column>
      <property name="text">
+      <string>State</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
       <string>CPU Usage</string>
      </property>
     </column>
@@ -114,7 +119,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Percentage</string>
+      <string>Mem Usage</string>
      </property>
     </column>
    </widget>

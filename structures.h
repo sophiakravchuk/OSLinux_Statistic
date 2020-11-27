@@ -15,6 +15,7 @@ struct task_manager_file_info {
     long mem_percentage;
     long pss;
     long vm_size;
+    std::string proc_state;
 };
 
 #endif //OS_STATISTIC_STRUCTURES_H
