@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QtSql>
+#include <QtDebug>
+#include <QFileInfo>
 
 #include "structures.h"
 
@@ -40,6 +43,7 @@ private:
     int pid_to_kill;
     int updating_t;
     Ui::MainWindow *ui;
+    int pushed_time_checkpoints = 0;
 
 };
 #endif // MAINWINDOW_H

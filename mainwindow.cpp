@@ -10,6 +10,8 @@
 #include <fstream>
 #include <filesystem>
 #include <signal.h>
+#include <iostream>
+#include <ctime>
 
 #include <boost/algorithm/string/trim.hpp>
 
@@ -26,6 +28,41 @@ MainWindow::MainWindow(QWidget *parent)
     ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
+
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+        std::string curr_path = std::filesystem::current_path();
+        std::string path_to_db = curr_path + "/db.sqlite";
+        if(std::filesystem::exists(path_to_db)){
+            std::filesystem::remove(path_to_db);
+        }
+
+        db.setDatabaseName(path_to_db.c_str());
+        if(!db.open()){
+            std::cout << "Cannot create database!!!" << std::endl;
+            QMessageBox::warning(this,
+                                         "Database creation",
+                                         "Cannot create database",
+                                         QMessageBox::Ok);
+        }
+        QString query = "CREATE TABLE all_finfos ("
+                "time_checkp Integer,"
+                "name varchar,"
+                "pid integer,"
+                "state varchar,"
+                "cpu_usage real,"
+                "virt Real,"
+                "pss Real,"
+                "mem_usage real"
+              ");"
+                "";
+        QSqlQuery qry;
+        if(!qry.exec(query)){
+            QMessageBox::warning(this,
+                                         "Database creation",
+                                         "Cannot create table",
+                                         QMessageBox::Ok);
+        }
+
         wind_timer = new QTimer(this);
         connect(wind_timer, &QTimer::timeout, this, &MainWindow::update_table);
 
@@ -47,6 +84,19 @@ void MainWindow::update_table() {
         updating_t = 1;
         all_tasks_info.clear();
         long mem_total = get_mem_total();
+        time_t now = time(0);
+        if (pushed_time_checkpoints >= 100){
+            QString query = "DELETE FROM all_finfos WHERE time_checkp = (SELECT MIN(time_checkp) FROM all_finfos);";
+            QSqlQuery qry;
+            if(!qry.exec(query)){
+                QMessageBox::warning(this,
+                                             "Database creation",
+                                             "Cannot delete checkpoint",
+                                             QMessageBox::Ok);
+                return;
+            }
+            pushed_time_checkpoints--;
+        }
         for(auto &p : std::filesystem::directory_iterator("/proc/")){
             std::string file_path =p.path();
             struct task_manager_file_info finfo;
@@ -59,10 +109,45 @@ void MainWindow::update_table() {
             get_cpu_and_name(&finfo, file_path);
             get_memory_info(&finfo, file_path, mem_total);
             get_proc_state(&finfo, file_path);
+
+
+
+//            std::string query_std = "INSERT INTO all_finfos VALUES (" +
+//                    std::to_string(now) + ", '" + finfo.process_name +
+//                    "', " + std::to_string(finfo.pid) + ", '" + finfo.proc_state +
+//                    "', " + std::to_string(finfo.cpu_usage) + ", " + std::to_string(finfo.vm_size) + ", "
+//                    + std::to_string(finfo.pss) + ", " + std::to_string(finfo.mem_percentage) + ");";
+//            QString query = QString::fromStdString(query_std);
+
+            QSqlQuery qry;
+
+            qry.prepare("INSERT INTO all_finfos VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+
+            qry.addBindValue(QString::fromStdString(std::to_string(now)));
+            qry.addBindValue(QString::fromStdString(finfo.process_name));
+            qry.addBindValue(QString::fromStdString(std::to_string(finfo.pid)));
+            qry.addBindValue(QString::fromStdString(finfo.proc_state));
+            qry.addBindValue(QString::fromStdString(std::to_string(finfo.cpu_usage)));
+            qry.addBindValue(QString::fromStdString(std::to_string(finfo.vm_size)));
+            qry.addBindValue(QString::fromStdString(std::to_string(finfo.pss)));
+            qry.addBindValue(QString::fromStdString(std::to_string(finfo.mem_percentage)));
+
+
+            if(!qry.exec()){
+                QMessageBox::warning(this,
+                                             "Database creation",
+                                             "Cannot add a row",
+                                             QMessageBox::Ok);
+            }
+
+
             all_tasks_info.push_back(finfo);
+
 
         }
 
+        pushed_time_checkpoints++;
+        std::cout << pushed_time_checkpoints << std::endl;
 
         /*add rows and columns*/
         ui->tableWidget->setRowCount(all_tasks_info.size());
