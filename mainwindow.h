@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QVector>
 #include <QMainWindow>
 #include <QTimer>
 #include <QtSql>
@@ -22,7 +23,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     struct sorting_info sort_flags { 0, -1, -1, -1, -1, -1, -1} ;
-    struct active_window actv_wind { 0, 0, 0, 0};
+    struct active_window actv_wind { 1, 0, 0, 0};
 
     std::vector<struct task_manager_file_info> all_tasks_info;
     void update_table();
@@ -49,6 +50,8 @@ private:
     int updating_t;
     Ui::MainWindow *ui;
     int pushed_time_checkpoints = 0;
+    void draw_graph(QVector<double> x_ax, QVector<double> y_ax);
+    QVector<double> load_points_cpu();
 
 };
 #endif // MAINWINDOW_H

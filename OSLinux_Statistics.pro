@@ -13,7 +13,8 @@ SOURCES += \
     mainwindow.cpp \
     additional_functions.cpp \
     reading_from_file.cpp \
-    parse_proc_dir.cpp
+    parse_proc_dir.cpp\
+    qcustomplot.cpp
 
 
 HEADERS += \
@@ -21,7 +22,8 @@ HEADERS += \
     additional_functions.h \
     reading_from_file.h \
     parse_proc_dir.h \
-    structures.h
+    structures.h \
+    qcustomplot.h
 
 
 FORMS += \

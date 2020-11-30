@@ -75,6 +75,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         QObject::connect( ui->tableWidget->horizontalHeader(), SIGNAL( sectionClicked( int ) ), this, SLOT( on_myTable_sectionClicked( int ) ) );
 
+
+        ui->plot->addGraph();
+
     }
 
 
@@ -143,6 +146,7 @@ void MainWindow::update_table() {
         }
 
         pushed_time_checkpoints++;
+        update_cpu_graph();
         std::cout << pushed_time_checkpoints << std::endl;
 
         /*add rows and columns*/
@@ -483,9 +487,50 @@ void MainWindow::slotKill(){
     }
 }
 
+void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax) {
+    ui->plot->graph(0)->clearData();
+    ui->plot->graph(0)->setData(x_ax, y_ax);
+    ui->plot->xAxis->setRange(0, x_ax.size());
+    ui->plot->yAxis->setRange(0, 500);
+    ui->plot->replot();
+//    ui->plot->graph(0)->rescaleAxes();
+    ui->plot->update();
+//    wind_timer->start(1000);
+}
+
+QVector<double> MainWindow::load_points_cpu(){
+    QString query = "SELECT "
+            "time_checkp,"
+            "SUM(cpu_usage) "
+        "FROM "
+            "all_finfos "
+        "GROUP BY "
+            "time_checkp;"
+            "";
+    QSqlQuery qry;
+
+    if(!qry.exec(query)){
+       QMessageBox::warning(this,
+                                    "Database usage",
+                                    "Cannot select data",
+                                    QMessageBox::Ok);
+    }
+    QVector<double> y_ax;
+    while (qry.next()) {
+       QString y = qry.value(1).toString();
+       y_ax.append(y.toDouble());
+    }
+    return y_ax;
+}
 
 void MainWindow::update_cpu_graph() {
+    QVector<double> y_ax = load_points_cpu();
+    QVector<double> x_ax;
+    for(int i = 0; i < y_ax.size(); i++){
+        x_ax.append(i);
+    }
 
+    draw_graph(x_ax, y_ax);
 }
 
 
@@ -495,7 +540,10 @@ void MainWindow::render_window() {
         update_table();
     }
     if (actv_wind.cpu) {
-        update_cpu_graph();
+        for(int i = 0 ; i < 5; i++){
+            update_cpu_graph();
+        }
+
     }
 }
 
