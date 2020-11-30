@@ -63,6 +63,13 @@ void get_cpu_and_name(struct task_manager_file_info* finfo,std::string file_path
     finfo->cpu_usage = 100 * ((total_time / clocks) / seconds);
 }
 
+std::map<std::string, std::string> get_constant_info(){
+    std::vector<std::string> key_words = {"cpu cores", "model name"};
+    std::map<std::string, std::string> cpuinfo_key_map;
+    get_values_from_file(&cpuinfo_key_map, key_words, "/proc/cpuinfo");
+    return cpuinfo_key_map;
+}
+
 
 void get_memory_info(struct task_manager_file_info* finfo, std::string file_path, long mem_total){
     std::vector<std::string> key_words = {"Pss", "VmSize"};

@@ -33,4 +33,9 @@ struct task_manager_file_info {
     std::string proc_state;
 };
 
+struct constant_info {
+    std::string cpu_name;
+    int cpu_cores;
+};
+
 #endif //OS_STATISTIC_STRUCTURES_H

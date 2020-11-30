@@ -31,6 +31,7 @@ public:
     void contextMenuEvent( QContextMenuEvent * e );
     void render_window();
     void update_cpu_graph();
+    struct constant_info constinf;
 
 private slots:
 

@@ -62,4 +62,44 @@ std::string memory_suitable_view(long mem_size){
     return s;
 }
 
+std::string seconds_to_time(int seconds){
+    int m = 0;
+    int h = 0;
+    int d = 0;
+    if(seconds >= 60){
+        m = seconds / 60;
+        seconds -= m*60;
+    }
+    if(m >= 60){
+        h = m / 60;
+        m -= h*60;
+    }
+    if(h >= 24){
+        d = h / 24;
+        h -= d*24;
+    }
+    std::string days = std::to_string(d);
+
+    std::string hours = "";
+    if (h < 10){
+        hours = "0";
+    }
+    hours += std::to_string(h);
+
+    std::string minutes = "";
+    if (m < 10){
+        minutes = "0";
+    }
+    minutes += std::to_string(m);
+
+    std::string seconds_s = "";
+    if (seconds < 10){
+        seconds_s = "0";
+    }
+    seconds_s += std::to_string(seconds);
+    std::string time = days + ":" + hours  + ":" + minutes + ":" + seconds_s;
+    return time;
+}
+
+
 

@@ -25,6 +25,7 @@
 #include "additional_functions.h"
 #include "parse_proc_dir.h"
 #include "structures.h"
+#include "reading_from_file.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -67,6 +68,10 @@ MainWindow::MainWindow(QWidget *parent)
                                          "Cannot create table",
                                          QMessageBox::Ok);
         }
+
+        std::map<std::string, std::string> consti = get_constant_info();
+        constinf.cpu_cores = stoi(consti["cpu cores"]);
+        constinf.cpu_name = consti["model name"];
 
         wind_timer = new QTimer(this);
         connect(wind_timer, &QTimer::timeout, this, &MainWindow::update_table);
@@ -491,11 +496,16 @@ void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax) {
     ui->plot->graph(0)->clearData();
     ui->plot->graph(0)->setData(x_ax, y_ax);
     ui->plot->xAxis->setRange(0, x_ax.size());
-    ui->plot->yAxis->setRange(0, 500);
+    ui->plot->xAxis->setVisible(false);
+//    QColor color(20+200/4.0*gi,70*(1.6-gi/4.0), 150, 150);
+
+    ui->plot->graph(0)->setBrush(QColor(15, 109, 28));
+
+
+
+    ui->plot->yAxis->setRange(0, 100);
     ui->plot->replot();
-//    ui->plot->graph(0)->rescaleAxes();
     ui->plot->update();
-//    wind_timer->start(1000);
 }
 
 QVector<double> MainWindow::load_points_cpu(){
@@ -518,7 +528,7 @@ QVector<double> MainWindow::load_points_cpu(){
     QVector<double> y_ax;
     while (qry.next()) {
        QString y = qry.value(1).toString();
-       y_ax.append(y.toDouble());
+       y_ax.append(y.toDouble()/constinf.cpu_cores);
     }
     return y_ax;
 }
@@ -531,6 +541,14 @@ void MainWindow::update_cpu_graph() {
     }
 
     draw_graph(x_ax, y_ax);
+    ui->CP_usage_text->setText(QString::number(y_ax[y_ax.size()-1]) + "%");
+    ui->NameText->setText(QString::fromStdString(constinf.cpu_name));
+    ui->NumbOfCorsText->setText(QString::number(constinf.cpu_cores));
+    std::vector<std::string> uptime_vec = read_file_to_vector("/proc/uptime");
+    int uptime_int = stoi(uptime_vec[0]);
+    QString uptime = QString::fromStdString(seconds_to_time(uptime_int));
+    ui->WorkingTimeText->setText(uptime);
+    ui->NumbOfProcsText->setText(QString::number(all_tasks_info.size()));
 }
 
 
@@ -539,11 +557,13 @@ void MainWindow::render_window() {
     if (actv_wind.processes) {
         update_table();
     }
-    if (actv_wind.cpu) {
+    else if (actv_wind.cpu) {
         for(int i = 0 ; i < 5; i++){
             update_cpu_graph();
         }
 
+    } else {
+        update_table();
     }
 }
 
