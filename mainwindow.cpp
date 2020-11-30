@@ -2,6 +2,11 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 #include <QMessageBox>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QAreaSeries>
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtGui/QPainter>
 #include <iostream>
 #include <vector>
 #include <stdio.h>
@@ -81,7 +86,6 @@ MainWindow::~MainWindow()
 void MainWindow::update_table() {
     int in = 0;
 
-        updating_t = 1;
         all_tasks_info.clear();
         long mem_total = get_mem_total();
         time_t now = time(0);
@@ -110,14 +114,6 @@ void MainWindow::update_table() {
             get_memory_info(&finfo, file_path, mem_total);
             get_proc_state(&finfo, file_path);
 
-
-
-//            std::string query_std = "INSERT INTO all_finfos VALUES (" +
-//                    std::to_string(now) + ", '" + finfo.process_name +
-//                    "', " + std::to_string(finfo.pid) + ", '" + finfo.proc_state +
-//                    "', " + std::to_string(finfo.cpu_usage) + ", " + std::to_string(finfo.vm_size) + ", "
-//                    + std::to_string(finfo.pss) + ", " + std::to_string(finfo.mem_percentage) + ");";
-//            QString query = QString::fromStdString(query_std);
 
             QSqlQuery qry;
 
@@ -200,13 +196,89 @@ void MainWindow::update_table() {
 
 }
 
+
 void MainWindow::on_myTable_sectionClicked(int index) {
-    for (int i = 0; i < static_cast<int>(sort_flags.flags.size()); i++){
-        if(i == index){
-            sort_flags.flags[i] += 1;
-            sort_flags.flags[i] %= 2;
-        } else {
-            sort_flags.flags[i] = -1;
+    switch (index) {
+        case (0): {
+            sort_flags.name += 1;
+            sort_flags.name %= 2;
+            sort_flags.cpu_u = -1;
+            sort_flags.state = -1;
+            sort_flags.mem_p = -1;
+            sort_flags.pid = -1;
+            sort_flags.pss = -1;
+            sort_flags.virt = -1;
+            break;
+        }
+        case (1): {
+            sort_flags.pid += 1;
+            sort_flags.pid %= 2;
+            sort_flags.cpu_u = -1;
+            sort_flags.state = -1;
+            sort_flags.mem_p = -1;
+            sort_flags.name = -1;
+            sort_flags.pss = -1;
+            sort_flags.virt = -1;
+            break;
+        }
+
+        case (2): {
+            sort_flags.state += 1;
+            sort_flags.state %= 2;
+            sort_flags.pid = -1;
+            sort_flags.cpu_u= -1;
+            sort_flags.mem_p = -1;
+            sort_flags.name = -1;
+            sort_flags.pss = -1;
+            sort_flags.virt = -1;
+            break;
+        }
+
+        case (3): {
+            sort_flags.cpu_u += 1;
+            sort_flags.cpu_u %= 2;
+            sort_flags.pid = -1;
+            sort_flags.mem_p = -1;
+            sort_flags.name = -1;
+            sort_flags.pss = -1;
+            sort_flags.virt = -1;
+            sort_flags.state = -1;
+            break;
+        }
+
+        case (4): {
+            sort_flags.virt += 1;
+            sort_flags.virt %= 2;
+            sort_flags.pid = -1;
+            sort_flags.mem_p = -1;
+            sort_flags.name = -1;
+            sort_flags.pss = -1;
+            sort_flags.cpu_u = -1;
+            sort_flags.state = -1;
+            break;
+        }
+
+        case (5): {
+            sort_flags.pss += 1;
+            sort_flags.pss %= 2;
+            sort_flags.pid = -1;
+            sort_flags.mem_p = -1;
+            sort_flags.name = -1;
+            sort_flags.virt = -1;
+            sort_flags.cpu_u = -1;
+            sort_flags.state = -1;
+            break;
+        }
+        case (6): {
+            sort_flags.mem_p += 1;
+            sort_flags.mem_p %= 2;
+            sort_flags.pid = -1;
+            sort_flags.pss = -1;
+            sort_flags.name = -1;
+            sort_flags.virt = -1;
+            sort_flags.cpu_u = -1;
+            sort_flags.state = -1;
+            break;
         }
     }
 }
@@ -214,8 +286,8 @@ void MainWindow::on_myTable_sectionClicked(int index) {
 void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_tasks_info) {
 
 
-    if (sort_flags.flags[0] != -1) {
-        if (!sort_flags.flags[0]) {
+    if (sort_flags.name != -1) {
+        if (sort_flags.name == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     int size_of_words = finfo1.process_name.size() < finfo2.process_name.size() ? finfo1.process_name.size(): finfo2.process_name.size();
                     for(int i = 0; i < size_of_words; i++){
@@ -233,7 +305,7 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
                     return finfo1.process_name < finfo2.process_name;
                 });
         }
-        else {
+        else if (sort_flags.name == 0) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     int size_of_words = finfo1.process_name.size() < finfo2.process_name.size() ? finfo1.process_name.size(): finfo2.process_name.size();
                     for(int i = 0; i < size_of_words; i++){
@@ -253,21 +325,22 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
         }
     }
 
-    else if (sort_flags.flags[1] != -1) {
-        if (sort_flags.flags[1]) {
+    else if (sort_flags.pid != -1) {
+        if (sort_flags.pid == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.pid > finfo2.pid;
                 });
             return;
-        } else {
+        }
+        else if (sort_flags.pid == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                 return finfo1.pid < finfo2.pid;
             });
         }
     }
 
-    else if (sort_flags.flags[2] != -1) {
-        if (sort_flags.flags[2]) {
+    else if (sort_flags.state != -1) {
+        if (sort_flags.state) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.proc_state > finfo2.proc_state;
                 });
@@ -279,53 +352,56 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
         }
     }
 
-    else if (sort_flags.flags[3] != -1) {
-        if (!sort_flags.flags[3]) {
+    else if (sort_flags.cpu_u != -1) {
+        if (sort_flags.cpu_u == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.cpu_usage > finfo2.cpu_usage;
                 });
             return;
         }
-        else {
+        else if (sort_flags.cpu_u == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                 return finfo1.cpu_usage < finfo2.cpu_usage;
             });
         }
     }
 
-    else if (sort_flags.flags[4]  != -1) {
-        if (!sort_flags.flags[4]) {
+    else if (sort_flags.virt != -1) {
+        if (sort_flags.virt == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.vm_size > finfo2.vm_size;
                 });
             return;
-        } else {
+        }
+        else if (sort_flags.virt == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                 return finfo1.vm_size < finfo2.vm_size;
             });
         }
     }
 
-    else if (sort_flags.flags[5]  != -1) {
-        if (!sort_flags.flags[5] ) {
+    else if (sort_flags.pss != -1) {
+        if (sort_flags.pss == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.pss > finfo2.pss;
                 });
             return;
-        } else {
+        }
+        else if (sort_flags.pss == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                 return finfo1.pss < finfo2.pss;
             });
         }
     }
 
-    else if (sort_flags.flags[6] != -1) {
-        if (!sort_flags.flags[6]) {
+    else if (sort_flags.mem_p != -1) {
+        if (sort_flags.mem_p == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     return finfo1.mem_percentage > finfo2.mem_percentage;
                 });
             return;
-        } else {
+        }
+        else if (sort_flags.mem_p == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                 return finfo1.mem_percentage < finfo2.mem_percentage;
             });
@@ -334,10 +410,9 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
 
     else {
         std::cerr << "Error in sort detection!!!" << std::endl;
+        return;
     }
 }
-
-
 
 void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
     if(updating_t){
@@ -409,3 +484,42 @@ void MainWindow::slotKill(){
 }
 
 
+void MainWindow::update_cpu_graph() {
+
+}
+
+
+void MainWindow::render_window() {
+
+    if (actv_wind.processes) {
+        update_table();
+    }
+    if (actv_wind.cpu) {
+        update_cpu_graph();
+    }
+}
+
+
+
+void MainWindow::on_Processes_Button_clicked()
+{
+    actv_wind.processes = 1;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 0;
+    actv_wind.about_us = 0;
+    ui->stackedWidget->setCurrentIndex(1);
+    render_window();
+}
+
+
+
+
+void MainWindow::on_CPU_Button_clicked()
+{
+    actv_wind.processes = 0;
+    actv_wind.cpu = 1;
+    actv_wind.memory = 0;
+    actv_wind.about_us = 0;
+    ui->stackedWidget->setCurrentIndex(2);
+    render_window();
+}

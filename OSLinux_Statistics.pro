@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql charts printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,6 +22,7 @@ HEADERS += \
     reading_from_file.h \
     parse_proc_dir.h \
     structures.h
+
 
 FORMS += \
     mainwindow.ui

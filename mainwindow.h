@@ -21,13 +21,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    struct sorting_info sort_flags { {0, -1, -1, -1, -1, -1, -1}, } ;
+    struct sorting_info sort_flags { 0, -1, -1, -1, -1, -1, -1} ;
+    struct active_window actv_wind { 0, 0, 0, 0};
 
     std::vector<struct task_manager_file_info> all_tasks_info;
     void update_table();
     QTimer* wind_timer;
     void contextMenuEvent( QContextMenuEvent * e );
-
+    void render_window();
+    void update_cpu_graph();
 
 private slots:
 
@@ -37,6 +39,9 @@ private slots:
 
     void sort_table(std::vector<struct task_manager_file_info>* all_tasks_info);
 
+    void on_Processes_Button_clicked();
+
+    void on_CPU_Button_clicked();
 
 private:
     std::string process_to_kill;

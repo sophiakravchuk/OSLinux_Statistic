@@ -5,8 +5,23 @@
 #include <vector>
 
 struct sorting_info {
-    std::vector<int> flags;
+    int name;
+    int pid;
+    int state;
+    int cpu_u;
+    int virt;
+    int pss;
+    int mem_p;
 };
+
+
+struct active_window {
+    int processes;
+    int cpu;
+    int memory;
+    int about_us;
+};
+
 
 struct task_manager_file_info {
     int pid;

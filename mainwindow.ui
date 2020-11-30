@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>790</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="VIRT_Button">
+   <widget class="QPushButton" name="AboutUs_Button">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -27,7 +27,7 @@
      <string>About Us</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="CPU_U_Button">
+   <widget class="QPushButton" name="Memory_Button">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -40,7 +40,7 @@
      <string>Memory</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="PID_Button">
+   <widget class="QPushButton" name="CPU_Button">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -53,77 +53,7 @@
      <string>CPU</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>801</width>
-      <height>501</height>
-     </rect>
-    </property>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>Process name</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>PID</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>State</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>CPU Usage</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>VIRT</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>PSS</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Mem Usage</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QPushButton" name="PID_Button_2">
+   <widget class="QPushButton" name="Processes_Button">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -136,6 +66,98 @@
      <string>Processes</string>
     </property>
    </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>30</y>
+      <width>801</width>
+      <height>571</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2">
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>791</width>
+        <height>571</height>
+       </rect>
+      </property>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>Process name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>PID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>State</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>CPU Usage</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>VIRT</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>PSS</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Mem Usage</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_3"/>
+   </widget>
+   <zorder>stackedWidget</zorder>
+   <zorder>AboutUs_Button</zorder>
+   <zorder>Memory_Button</zorder>
+   <zorder>CPU_Button</zorder>
+   <zorder>Processes_Button</zorder>
   </widget>
  </widget>
  <resources/>
