@@ -31,6 +31,7 @@ public:
     void contextMenuEvent( QContextMenuEvent * e );
     void render_window();
     void update_cpu_graph();
+    void update_mem_graph();
     struct constant_info constinf;
 
 private slots:
@@ -45,6 +46,8 @@ private slots:
 
     void on_CPU_Button_clicked();
 
+    void on_Memory_Button_clicked();
+
 private:
     std::string process_to_kill;
     int pid_to_kill;
@@ -52,7 +55,9 @@ private:
     Ui::MainWindow *ui;
     int pushed_time_checkpoints = 0;
     void draw_graph(QVector<double> x_ax, QVector<double> y_ax);
+    void draw_graph_2(QVector<double> x_ax, QVector<double> y_ax);
     QVector<double> load_points_cpu();
+    QVector<double> load_points_mem();
 
 };
 #endif // MAINWINDOW_H

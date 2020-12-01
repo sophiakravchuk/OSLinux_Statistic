@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
         ui->plot->addGraph();
+        ui->plot_2->addGraph();
 
     }
 
@@ -152,6 +153,7 @@ void MainWindow::update_table() {
 
         pushed_time_checkpoints++;
         update_cpu_graph();
+        update_mem_graph();
         std::cout << pushed_time_checkpoints << std::endl;
 
         /*add rows and columns*/
@@ -552,15 +554,93 @@ void MainWindow::update_cpu_graph() {
 }
 
 
+void MainWindow::draw_graph_2(QVector<double> x_ax, QVector<double> y_ax) {
+    ui->plot_2->graph(0)->clearData();
+    ui->plot_2->graph(0)->setData(x_ax, y_ax);
+    ui->plot_2->xAxis->setRange(0, x_ax.size());
+    ui->plot_2->xAxis->setVisible(false);
+//    QColor color(20+200/4.0*gi,70*(1.6-gi/4.0), 150, 150);
+
+//    ui->plot->graph(0)->setBrush(QColor(15, 109, 28));
+    ui->plot_2->graph(0)->setBrush(QBrush("purple"));
+
+
+    ui->plot_2->yAxis->setRange(0, 100);
+    ui->plot_2->replot();
+    ui->plot_2->update();
+}
+
+
+QVector<double> MainWindow::load_points_mem(){
+    QString query = "SELECT "
+            "time_checkp,"
+            "SUM(mem_usage) "
+        "FROM "
+            "all_finfos "
+        "GROUP BY "
+            "time_checkp;"
+            "";
+    QSqlQuery qry;
+
+    if(!qry.exec(query)){
+       QMessageBox::warning(this,
+                                    "Database usage",
+                                    "Cannot select data",
+                                    QMessageBox::Ok);
+    }
+    QVector<double> y_ax;
+    while (qry.next()) {
+       QString y = qry.value(1).toString();
+       y_ax.append(y.toDouble());
+    }
+    return y_ax;
+}
+
+
+void MainWindow::update_mem_graph() {
+    QVector<double> y_ax = load_points_mem();
+    QVector<double> x_ax;
+    for(int i = 0; i < y_ax.size(); i++){
+        x_ax.append(i);
+    }
+
+    draw_graph_2(x_ax, y_ax);
+
+    std::vector<std::string> key_word = {"MemTotal", "MemFree", "MemAvailable", "Cached", "SwapCached"};
+    std::map<std::string, std::string> mem_key_map;
+    get_values_from_file(&mem_key_map, key_word, "/proc/meminfo");
+
+    for (int ind = 0; ind < key_word.size(); ind++) {
+        mem_key_map[key_word[ind]].pop_back();
+        mem_key_map[key_word[ind]].pop_back();
+        boost::algorithm::trim(mem_key_map[key_word[ind]]);
+    }
+//    memory_suitable_view();
+
+    long mem_total = stol(mem_key_map["MemTotal"]);
+    ui->TotalMemText->setText(QString::fromStdString(memory_suitable_view(mem_total)));
+
+    long mem_used = (y_ax[y_ax.size()-1] * mem_total)/100;
+    ui->UsedMemText->setText(QString::fromStdString(memory_suitable_view(mem_used)) +
+            "(" + (QString::number(y_ax[y_ax.size()-1]) + "%)"));
+
+    ui->FreeMemText->setText(QString::fromStdString(memory_suitable_view(stol(mem_key_map["MemAvailable"]) +
+                                                    stol(mem_key_map["MemFree"]) +
+                                                    stol(mem_key_map["Cached"]))));
+
+    ui->CachedMemText->setText(QString::fromStdString(memory_suitable_view(stol(mem_key_map["Cached"]))));
+}
+
 void MainWindow::render_window() {
 
     if (actv_wind.processes) {
         update_table();
     }
     else if (actv_wind.cpu) {
-        for(int i = 0 ; i < 5; i++){
-            update_cpu_graph();
-        }
+        update_cpu_graph();
+
+    } else if (actv_wind.memory) {
+        update_mem_graph();
 
     } else {
         update_table();
@@ -589,5 +669,15 @@ void MainWindow::on_CPU_Button_clicked()
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
     ui->stackedWidget->setCurrentIndex(2);
+    render_window();
+}
+
+void MainWindow::on_Memory_Button_clicked()
+{
+    actv_wind.processes = 0;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 1;
+    actv_wind.about_us = 0;
+    ui->stackedWidget->setCurrentIndex(3);
     render_window();
 }
