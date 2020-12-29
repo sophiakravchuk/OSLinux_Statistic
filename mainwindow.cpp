@@ -1,6 +1,7 @@
 #include <QTimer>
 #include <QMenu>
 #include <QContextMenuEvent>
+#include <QLocale>
 #include <QMessageBox>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QAreaSeries>
@@ -74,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
         constinf.cpu_name = consti["model name"];
 
         wind_timer = new QTimer(this);
-        connect(wind_timer, &QTimer::timeout, this, &MainWindow::update_table);
+        connect(wind_timer, &QTimer::timeout, this, &MainWindow::update_database);
 
         ui->tableWidget->verticalHeader()->setVisible(false);
 
@@ -83,6 +84,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         ui->plot->addGraph();
         ui->plot_2->addGraph();
+        ui->plot_3->addGraph();
+        ui->plot_4->addGraph();
+        update_database();
 
     }
 
@@ -95,66 +99,6 @@ MainWindow::~MainWindow()
 void MainWindow::update_table() {
     int in = 0;
 
-        all_tasks_info.clear();
-        long mem_total = get_mem_total();
-        time_t now = time(0);
-        if (pushed_time_checkpoints >= 100){
-            QString query = "DELETE FROM all_finfos WHERE time_checkp = (SELECT MIN(time_checkp) FROM all_finfos);";
-            QSqlQuery qry;
-            if(!qry.exec(query)){
-                QMessageBox::warning(this,
-                                             "Database creation",
-                                             "Cannot delete checkpoint",
-                                             QMessageBox::Ok);
-                return;
-            }
-            pushed_time_checkpoints--;
-        }
-        for(auto &p : std::filesystem::directory_iterator("/proc/")){
-            std::string file_path =p.path();
-            struct task_manager_file_info finfo;
-            std::vector<std::string> vec = split(file_path, "/");
-            std::string filename = vec[vec.size()-1];
-            if(!is_number(filename)){
-                continue;
-            }
-            finfo.pid = stoi(filename);
-            get_cpu_and_name(&finfo, file_path);
-            get_memory_info(&finfo, file_path, mem_total);
-            get_proc_state(&finfo, file_path);
-
-
-            QSqlQuery qry;
-
-            qry.prepare("INSERT INTO all_finfos VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-
-            qry.addBindValue(QString::fromStdString(std::to_string(now)));
-            qry.addBindValue(QString::fromStdString(finfo.process_name));
-            qry.addBindValue(QString::fromStdString(std::to_string(finfo.pid)));
-            qry.addBindValue(QString::fromStdString(finfo.proc_state));
-            qry.addBindValue(QString::fromStdString(std::to_string(finfo.cpu_usage)));
-            qry.addBindValue(QString::fromStdString(std::to_string(finfo.vm_size)));
-            qry.addBindValue(QString::fromStdString(std::to_string(finfo.pss)));
-            qry.addBindValue(QString::fromStdString(std::to_string(finfo.mem_percentage)));
-
-
-            if(!qry.exec()){
-                QMessageBox::warning(this,
-                                             "Database creation",
-                                             "Cannot add a row",
-                                             QMessageBox::Ok);
-            }
-
-
-            all_tasks_info.push_back(finfo);
-
-
-        }
-
-        pushed_time_checkpoints++;
-        update_cpu_graph();
-        update_mem_graph();
-        std::cout << pushed_time_checkpoints << std::endl;
 
         /*add rows and columns*/
         ui->tableWidget->setRowCount(all_tasks_info.size());
@@ -199,14 +143,104 @@ void MainWindow::update_table() {
                 QTableWidgetItem *pCell6 = ui->tableWidget->item(i, 6);
                 pCell6->setText((std::to_string(all_tasks_info[i].mem_percentage) + " %").c_str());
 
+                int cpu25 = (all_tasks_info[i].cpu_usage >25) ? 1 : 0;
+                int mem25 = (all_tasks_info[i].mem_percentage >25) ? 1 : 0;
+                if (cpu25 || mem25){
+                    double val = cpu25 ? all_tasks_info[i].cpu_usage : all_tasks_info[i].mem_percentage;
+                    char color = cpu25 ? 'g' : 'p';
+                    if(cpu25 && mem25){
+                        val = (all_tasks_info[i].cpu_usage + all_tasks_info[i].mem_percentage) / 2;
+                        color = 'r';
+                    }
+                    int range_percent = 0;
+                    if (val >= 90){
+                        range_percent = 4;
+                    } else {
+                        while (val > 25){
+                            val -= 25;
+                            range_percent++;
+                        }
+                    }
+                    std::string color_key = std::to_string(range_percent) + color;
+                    std::string color_val = color_map[color_key];
+                    for (int j = 0; j < 7; j++){
+                        ui->tableWidget->item(i, j)->setBackground(QBrush(QColor(color_val.c_str())));
+                    }
+                }
             }
             ui->tableWidget->update();
             updating_t = 0;
-            wind_timer->start(1000);
+
             in++;
 
 }
 
+void MainWindow::update_database(){
+    all_tasks_info.clear();
+    long mem_total = get_mem_total();
+    time_t now = time(0);
+    if (pushed_time_checkpoints >= 100){
+        QString query = "DELETE FROM all_finfos WHERE time_checkp = (SELECT MIN(time_checkp) FROM all_finfos);";
+        QSqlQuery qry;
+        if(!qry.exec(query)){
+            QMessageBox::warning(this,
+                                         "Database creation",
+                                         "Cannot delete checkpoint",
+                                         QMessageBox::Ok);
+            return;
+        }
+        pushed_time_checkpoints--;
+    }
+    for(auto &p : std::filesystem::directory_iterator("/proc/")){
+        std::string file_path =p.path();
+        struct task_manager_file_info finfo;
+        std::vector<std::string> vec = split(file_path, "/");
+        std::string filename = vec[vec.size()-1];
+        if(!is_number(filename)){
+            continue;
+        }
+        finfo.pid = stoi(filename);
+        get_cpu_and_name(&finfo, file_path);
+        if (finfo.process_name == ""){
+            continue;
+        }
+        get_memory_info(&finfo, file_path, mem_total);
+        get_proc_state(&finfo, file_path);
+
+
+        QSqlQuery qry;
+
+        qry.prepare("INSERT INTO all_finfos VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+
+        qry.addBindValue(QString::fromStdString(std::to_string(now)));
+        qry.addBindValue(QString::fromStdString(finfo.process_name));
+        qry.addBindValue(QString::fromStdString(std::to_string(finfo.pid)));
+        qry.addBindValue(QString::fromStdString(finfo.proc_state));
+        qry.addBindValue(QString::fromStdString(std::to_string(finfo.cpu_usage)));
+        qry.addBindValue(QString::fromStdString(std::to_string(finfo.vm_size)));
+        qry.addBindValue(QString::fromStdString(std::to_string(finfo.pss)));
+        qry.addBindValue(QString::fromStdString(std::to_string(finfo.mem_percentage)));
+
+
+        if(!qry.exec()){
+            QMessageBox::warning(this,
+                                         "Database creation",
+                                         "Cannot add a row",
+                                         QMessageBox::Ok);
+        }
+
+
+        all_tasks_info.push_back(finfo);
+
+
+    }
+
+    pushed_time_checkpoints++;
+    std::cout << pushed_time_checkpoints << std::endl;
+    wind_timer->start(50);
+    render_window();
+
+}
 
 void MainWindow::on_myTable_sectionClicked(int index) {
     switch (index) {
@@ -433,15 +467,18 @@ void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
     if (row == -1){
         return;
     }
-    process_to_kill = all_tasks_info[row].process_name;
-    pid_to_kill = all_tasks_info[row].pid;
-    QAction *pKillProc = new QAction("Kill process",this);
+    process_right_clicked = all_tasks_info[row].process_name;
+    pid_right_clicked = all_tasks_info[row].pid;
+    QAction *pKillProc = new QAction("Kill process", this);
     connect(pKillProc,SIGNAL(triggered()),this,SLOT(slotKill()));
 
-    //
+    QAction *pGraphProc = new QAction("Graph process", this);
+    connect(pGraphProc,SIGNAL(triggered()),this,SLOT(slotGraph()));
+
     QMenu *pContextMenu = new QMenu( this);
     pContextMenu->addAction(pKillProc);
-    //
+    pContextMenu->addAction(pGraphProc);
+
     if(updating_t){
         delete pContextMenu;
         pContextMenu = NULL;
@@ -455,7 +492,7 @@ void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
 
 void MainWindow::slotKill(){
     std::string delete_message = "Do you really want to kill process: ";
-    delete_message += process_to_kill + " ?";
+    delete_message += process_right_clicked + " ?";
     if (QMessageBox::warning(this,
                              "Killing process",
                              delete_message.c_str(),
@@ -464,8 +501,8 @@ void MainWindow::slotKill(){
         return;
     } else {
         for(auto finfo : all_tasks_info){
-            if (finfo.pid == pid_to_kill){
-                if (finfo.process_name != process_to_kill){
+            if (finfo.pid == pid_right_clicked){
+                if (finfo.process_name != process_right_clicked){
                     QMessageBox::warning(this,
                                                  "Killing process",
                                                  "No such process found",
@@ -475,14 +512,14 @@ void MainWindow::slotKill(){
                 break;
             }
         }
-        if (pid_to_kill < 0){
+        if (pid_right_clicked < 0){
             QMessageBox::warning(this,
                                          "Killing process",
                                          "No such process found",
                                          QMessageBox::Ok);
             std::cout << "No such process found" << std::endl;
         }
-        if(kill(pid_to_kill, SIGTERM)!=0){
+        if(kill(pid_right_clicked, SIGTERM)!=0){
             QMessageBox::warning(this,
                                          "Killing process",
                                          "Cannot kill process",
@@ -492,6 +529,102 @@ void MainWindow::slotKill(){
 
 
     }
+}
+
+void MainWindow::slotGraph(){
+    update_proc_graph();
+    actv_wind.processes = 0;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 0;
+    actv_wind.about_us = 0;
+    actv_wind.graph_proc = 1;
+    ui->stackedWidget->setCurrentIndex(4);
+    render_window();
+}
+
+
+
+QVector<double> MainWindow::load_points_proc(std::string data_type){
+
+    std::string points_type;
+    if (data_type == "proc"){
+          points_type = "cpu_usage";
+    } else {
+          points_type = "mem_usage";
+    }
+
+    std::string a = "SELECT time_checkp, " + points_type + " FROM all_finfos "
+                              "WHERE pid='" + std::to_string(pid_right_clicked) + "' GROUP BY time_checkp;";
+    QString query = QString::fromStdString(a);
+
+    QSqlQuery query1;
+
+    if(!query1.exec(query)){
+       QMessageBox::warning(this,
+                                    "Database usage",
+                                   "Cannot select data",
+                                    QMessageBox::Ok);
+    }
+    QVector<double> y_ax;
+    while (query1.next()) {
+       QString y = query1.value(1).toString();
+       std::string y_string = y.toStdString();
+       double y_double = stod(y_string);
+       if (data_type == "proc") {
+           y_double = y_double/constinf.cpu_cores;
+       }
+       y_ax.append(y_double);
+    }
+    return y_ax;
+}
+
+
+void MainWindow::update_proc_graph(){
+    QVector<double> y_ax_cpu = load_points_proc("proc");
+    QVector<double> x_ax_cpu;
+
+    for(int i = 0; i < y_ax_cpu.size(); i++){
+        x_ax_cpu.append(i);
+    }
+
+    draw_graph_3(x_ax_cpu, y_ax_cpu);
+    ui->UsedCpuText_2->setText(QString::number(y_ax_cpu[y_ax_cpu.size()-1]*constinf.cpu_cores) + "%");
+
+    QVector<double> y_ax_mem = load_points_proc("mem");
+    QVector<double> x_ax_mem;
+
+    for(int i = 0; i < y_ax_mem.size(); i++){
+        x_ax_mem.append(i);
+    }
+
+    draw_graph_4(x_ax_mem, y_ax_mem);
+    ui->UsedMemText_2->setText(QString::number(y_ax_mem[y_ax_mem.size()-1]) + "%");
+}
+
+void MainWindow::draw_graph_3(QVector<double> x_ax, QVector<double> y_ax) {
+    ui->plot_3->graph(0)->clearData();
+    ui->plot_3->graph(0)->setData(x_ax, y_ax);
+    ui->plot_3->xAxis->setRange(0, x_ax.size());
+    ui->plot_3->xAxis->setVisible(false);
+    ui->plot_3->graph(0)->setBrush(QColor(15, 109, 28));
+
+
+    ui->plot_3->yAxis->setRange(0, 100);
+    ui->plot_3->replot();
+    ui->plot_3->update();
+}
+
+void MainWindow::draw_graph_4(QVector<double> x_ax, QVector<double> y_ax) {
+    ui->plot_4->graph(0)->clearData();
+    ui->plot_4->graph(0)->setData(x_ax, y_ax);
+    ui->plot_4->xAxis->setRange(0, x_ax.size());
+    ui->plot_4->xAxis->setVisible(false);
+
+    ui->plot_4->graph(0)->setBrush(QBrush("purple"));
+
+    ui->plot_4->yAxis->setRange(0, 100);
+    ui->plot_4->replot();
+    ui->plot_4->update();
 }
 
 void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax) {
@@ -546,8 +679,11 @@ void MainWindow::update_cpu_graph() {
     ui->CP_usage_text->setText(QString::number(y_ax[y_ax.size()-1]) + "%");
     ui->NameText->setText(QString::fromStdString(constinf.cpu_name));
     ui->NumbOfCorsText->setText(QString::number(constinf.cpu_cores));
+    int uptime_int = 0;
     std::vector<std::string> uptime_vec = read_file_to_vector("/proc/uptime");
-    int uptime_int = stoi(uptime_vec[0]);
+    if (!uptime_vec.empty()){
+        uptime_int = stoi(uptime_vec[0]);
+    }
     QString uptime = QString::fromStdString(seconds_to_time(uptime_int));
     ui->WorkingTimeText->setText(uptime);
     ui->NumbOfProcsText->setText(QString::number(all_tasks_info.size()));
@@ -610,7 +746,7 @@ void MainWindow::update_mem_graph() {
     std::map<std::string, std::string> mem_key_map;
     get_values_from_file(&mem_key_map, key_word, "/proc/meminfo");
 
-    for (int ind = 0; ind < key_word.size(); ind++) {
+    for (int ind = 0; ind < (int)key_word.size(); ind++) {
         mem_key_map[key_word[ind]].pop_back();
         mem_key_map[key_word[ind]].pop_back();
         boost::algorithm::trim(mem_key_map[key_word[ind]]);
@@ -642,6 +778,8 @@ void MainWindow::render_window() {
     } else if (actv_wind.memory) {
         update_mem_graph();
 
+    } else if(actv_wind.graph_proc){
+        update_proc_graph();
     } else {
         update_table();
     }
@@ -679,5 +817,15 @@ void MainWindow::on_Memory_Button_clicked()
     actv_wind.memory = 1;
     actv_wind.about_us = 0;
     ui->stackedWidget->setCurrentIndex(3);
+    render_window();
+}
+
+void MainWindow::on_AboutUs_Button_clicked()
+{
+    actv_wind.processes = 0;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 0;
+    actv_wind.about_us = 1;
+    ui->stackedWidget->setCurrentIndex(5);
     render_window();
 }

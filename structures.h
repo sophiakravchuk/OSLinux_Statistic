@@ -20,6 +20,7 @@ struct active_window {
     int cpu;
     int memory;
     int about_us;
+    int graph_proc;
 };
 
 

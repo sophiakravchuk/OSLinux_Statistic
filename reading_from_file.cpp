@@ -37,17 +37,27 @@ void get_values_from_file(std::map<std::string, std::string>* values, std::vecto
 
 std::vector<std::string> read_file_to_vector(const std::string& path_to_file){
     int fd = open(path_to_file.c_str(), O_RDONLY);
-    char buffer[1000];
-    std::string out_str;
-    int len =0;
-    while((len = read(fd, buffer, 1000)) != 0){
-        if(len != 1000){
-            buffer[len] = '\0';
+        std::vector<std::string> values;
+
+        char buffer[1000];
+        std::string out_str;
+        if(fd < 0){
+            return values;
         }
-        out_str += buffer;
-        memset(buffer, 0, 1000);
-    }
-    close(fd);
-    std::vector<std::string> values = split(out_str, " ");
-    return values;
+        int len = read(fd, buffer, 1000);
+        while(len != 0){
+            if (len < 0){
+                std::cout << "Len < 0" << std::endl;
+                break;
+            }
+            if(len != 1000){
+                buffer[len] = '\0';
+            }
+            out_str += buffer;
+            memset(buffer, 0, 1000);
+            len = read(fd, buffer, 1000);
+        }
+        close(fd);
+        values = split(out_str, " ");
+        return values;
 }

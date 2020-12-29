@@ -35,10 +35,17 @@ long get_mem_total() {
 
 void get_cpu_and_name(struct task_manager_file_info* finfo,std::string file_path){
     std::vector<std::string> uptime_vec = read_file_to_vector("/proc/uptime");
-    int uptime = stod(uptime_vec[0]);
+    int uptime = 0;
+    if (!uptime_vec.empty()){
+        uptime = stoi(uptime_vec[0]);
+    }
     std::vector<std::string> stat_vec = read_file_to_vector(file_path + "/stat");
     double clocks =sysconf(_SC_CLK_TCK);
     int shift = 0;
+    if (stat_vec.empty()){
+        std::string process_name = "";
+        return;
+    }
     std::string process_name = stat_vec[1];
     if (process_name[0] != '('){
         std::cerr << "error";
