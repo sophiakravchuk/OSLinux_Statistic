@@ -21,6 +21,7 @@ struct active_window {
     int memory;
     int about_us;
     int graph_proc;
+    int help;
 };
 
 

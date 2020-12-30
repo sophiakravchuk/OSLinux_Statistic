@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
                                          "Database creation",
                                          "Cannot create database",
                                          QMessageBox::Ok);
+            qApp->quit();
         }
         QString query = "CREATE TABLE all_finfos ("
                 "time_checkp Integer,"
@@ -68,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
                                          "Database creation",
                                          "Cannot create table",
                                          QMessageBox::Ok);
+            qApp->quit();
         }
 
         std::map<std::string, std::string> consti = get_constant_info();
@@ -101,10 +103,22 @@ MainWindow::MainWindow(QWidget *parent)
         ui->AboutUs_Button->setIcon(ButtonIcon3);
         ui->AboutUs_Button->setIconSize(QSize(20, 20));
 
-//        QPixmap pixmap(":/processes.png");
-//        QIcon ButtonIcon(pixmap);
-//        ui->Processes_Button->setIcon(ButtonIcon);
-//        ui->Processes_Button->setIconSize(QSize(30, 30));
+        QPixmap pixmap4(":/help.png");
+        QIcon ButtonIcon4(pixmap4);
+        ui->Help_Button->setIcon(ButtonIcon4);
+        ui->Help_Button->setIconSize(QSize(25, 25));
+
+        QPixmap pixmap5(":/dark_theme.png");
+        QIcon ButtonIcon5(pixmap5);
+        ui->DarkTheme->setIcon(ButtonIcon5);
+        ui->DarkTheme->setIconSize(QSize(25, 25));
+
+        btns.push_back(ui->Processes_Button);
+        btns.push_back(ui->CPU_Button);
+        btns.push_back(ui->Memory_Button);
+        btns.push_back(ui->AboutUs_Button);
+        btns.push_back(ui->Help_Button);
+        btns.push_back(ui->DarkTheme);
 
         ui->plot->addGraph();
         ui->plot_2->addGraph();
@@ -115,7 +129,30 @@ MainWindow::MainWindow(QWidget *parent)
         plts.push_back(ui->plot_3);
         plts.push_back(ui->plot_4);
         update_database();
+        ui->NameText->setStyleSheet(QString("background-color:'#8863C132'; font-weight: 900; "
+                                            " font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
+        ui->CP_usage_text->setStyleSheet(QString("background-color:'#289EE37D';"));
+        ui->NumbOfCorsText->setStyleSheet(QString("background-color:'#289EE37D';"));
+        ui->NumbOfProcsText->setStyleSheet(QString("background-color:'#289EE37D';"));
+        ui->WorkingTimeText->setStyleSheet(QString("background-color:'#289EE37D';"));
 
+        ui->CachedMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
+        ui->FreeMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
+        ui->TotalMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
+        ui->UsedMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
+
+
+        ui->UsedCpuText_2->setStyleSheet(QString("background-color:'#289EE37D';"));
+        ui->UsedCpuText_3->setStyleSheet(QString("background-color:'#289EE37D';"));
+        ui->UsedMemText_2->setStyleSheet(QString("background-color:'#229D4EDD';"));
+
+        ui->Title_2->setStyleSheet(QString("font-weight: 900; font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
+
+        theme_highlight_color = "#90e0ef";
+        theme_default_color = "#ffffff";
+        theme_text_color = "#000000";
+
+        on_Processes_Button_clicked();
     }
 
 
@@ -170,7 +207,9 @@ void MainWindow::update_table() {
 
                 QTableWidgetItem *pCell6 = ui->tableWidget->item(i, 6);
                 pCell6->setText((std::to_string(all_tasks_info[i].mem_percentage) + " %").c_str());
-
+                for (int j = 0; j < 7; j++){
+                    ui->tableWidget->item(i, j)->setForeground(QBrush(QColor(theme_text_color.c_str())));
+                }
                 int cpu25 = (all_tasks_info[i].cpu_usage >=25) ? 1 : 0;
                 int mem25 = (all_tasks_info[i].mem_percentage >=25) ? 1 : 0;
                 if (cpu25 || mem25){
@@ -255,6 +294,7 @@ void MainWindow::update_database(){
                                          "Database creation",
                                          "Cannot add a row",
                                          QMessageBox::Ok);
+            qApp->quit();
         }
 
 
@@ -781,7 +821,22 @@ void MainWindow::on_Processes_Button_clicked()
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
     actv_wind.graph_proc = 0;
+    actv_wind.help = 0;
     ui->stackedWidget->setCurrentIndex(1);
+
+    for(auto btn: btns){
+        QPalette pal = btn->palette();
+        if(btn == ui->Processes_Button){
+        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+        } else {
+        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+        }
+        btn->setAutoFillBackground(true);
+        btn->setPalette(pal);
+        btn->update();
+    }
+
+
     render_window();
 }
 
@@ -795,7 +850,21 @@ void MainWindow::on_CPU_Button_clicked()
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
     actv_wind.graph_proc = 0;
+    actv_wind.help = 0;
     ui->stackedWidget->setCurrentIndex(2);
+
+    for(auto btn: btns){
+        QPalette pal = btn->palette();
+        if(btn == ui->CPU_Button){
+        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+        } else {
+        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+        }
+        btn->setAutoFillBackground(true);
+        btn->setPalette(pal);
+        btn->update();
+    }
+
     render_window();
 }
 
@@ -806,7 +875,21 @@ void MainWindow::on_Memory_Button_clicked()
     actv_wind.memory = 1;
     actv_wind.about_us = 0;
     actv_wind.graph_proc = 0;
+    actv_wind.help = 0;
     ui->stackedWidget->setCurrentIndex(3);
+
+    for(auto btn: btns){
+        QPalette pal = btn->palette();
+        if(btn == ui->Memory_Button){
+        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+        } else {
+        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+        }
+        btn->setAutoFillBackground(true);
+        btn->setPalette(pal);
+        btn->update();
+    }
+
     render_window();
 }
 
@@ -817,7 +900,21 @@ void MainWindow::on_AboutUs_Button_clicked()
     actv_wind.memory = 0;
     actv_wind.graph_proc = 0;
     actv_wind.about_us = 1;
+    actv_wind.help = 0;
     ui->stackedWidget->setCurrentIndex(5);
+
+    for(auto btn: btns){
+        QPalette pal = btn->palette();
+        if(btn == ui->AboutUs_Button){
+        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+        } else {
+        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+        }
+        btn->setAutoFillBackground(true);
+        btn->setPalette(pal);
+        btn->update();
+    }
+
     render_window();
 }
 
@@ -828,7 +925,74 @@ void MainWindow::on_kill_this_proc_clicked()
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
     actv_wind.graph_proc = 0;
-    ui->stackedWidget->setCurrentIndex(1);
+    actv_wind.help = 0;
+    ui->stackedWidget->setCurrentIndex(1); 
     render_window();
     slotKill();
+}
+
+void MainWindow::on_Help_Button_clicked()
+{
+    actv_wind.processes = 0;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 0;
+    actv_wind.graph_proc = 0;
+    actv_wind.about_us = 0;
+    actv_wind.help = 1;
+    ui->stackedWidget->setCurrentIndex(6);
+    for(auto btn: btns){
+        QPalette pal = btn->palette();
+        if(btn == ui->Help_Button){
+        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+        } else {
+        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+        }
+        btn->setAutoFillBackground(true);
+        btn->setPalette(pal);
+        btn->update();
+    }
+
+    render_window();
+}
+
+void MainWindow::on_DarkTheme_clicked()
+{
+    if (darktheme){
+        darktheme = 0;
+        theme_highlight_color = "#90e0ef";
+        theme_default_color = "#ffffff";
+        theme_text_color = "#000000";
+    } else {
+        darktheme = 1;
+        theme_highlight_color = "#1985a1";
+        theme_default_color = "#46494c";
+        theme_text_color = "#dcdcdd";
+
+    }
+    std::string text_button_c = "QPushButton {color: " + theme_text_color + ";}";
+    for(auto btn: btns){
+        btn->setStyleSheet(QString::fromStdString(text_button_c));
+    }
+
+    std::string text_c = "color: " + theme_text_color + ";";
+    ui->tabWidget->setStyleSheet(QString::fromStdString(text_c));
+    ui->tabWidget_2->setStyleSheet(QString::fromStdString(text_c));
+    std::string background_color = "background-color:" + theme_default_color + ";";
+
+    this->setStyleSheet(QString::fromStdString(background_color));
+
+    if(actv_wind.processes){
+        on_Processes_Button_clicked();
+    } else if (actv_wind.cpu){
+        on_CPU_Button_clicked();
+    } else if (actv_wind.memory){
+        on_Memory_Button_clicked();
+    } else if (actv_wind.graph_proc){
+        slotGraph();
+    } else if (actv_wind.about_us){
+        on_AboutUs_Button_clicked();
+    } else if (actv_wind.help){
+        on_Help_Button_clicked();
+    }
+    render_window();
 }

@@ -25,7 +25,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     struct sorting_info sort_flags { 0, -1, -1, -1, -1, -1, -1} ;
-    struct active_window actv_wind { 1, 0, 0, 0, 0};
+    struct active_window actv_wind { 1, 0, 0, 0, 0, 0};
 
     std::vector<struct task_manager_file_info> all_tasks_info;
     void update_table();
@@ -59,7 +59,13 @@ private slots:
 
     void on_kill_this_proc_clicked();
 
+    void on_Help_Button_clicked();
+
+    void on_DarkTheme_clicked();
+
 private:
+    int darktheme = 0;
+    std::vector<QPushButton*> btns;
     std::vector<QCustomPlot*> plts;
     std::string process_right_clicked;
     int pid_right_clicked;
@@ -68,6 +74,9 @@ private:
     int pushed_time_checkpoints = 0;
     QVector<double> load_points_cpu();
     QVector<double> load_points_mem();
+    std::string theme_highlight_color;
+    std::string theme_default_color;
+    std::string theme_text_color;
     std::map<std::string, std::string> color_map = {
                                                         {"1g", "#889EE37D"},
                                                         {"2g", "#8863C132"},

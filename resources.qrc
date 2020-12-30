@@ -6,5 +6,6 @@
   <file>help.png</file>
   <file>aboutus.png</file>
   <file>cpu.png</file>
+  <file>dark_theme.png</file>
 </qresource>
 </RCC>
