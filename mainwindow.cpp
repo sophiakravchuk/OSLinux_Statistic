@@ -81,6 +81,30 @@ MainWindow::MainWindow(QWidget *parent)
 
         QObject::connect( ui->tableWidget->horizontalHeader(), SIGNAL( sectionClicked( int ) ), this, SLOT( on_myTable_sectionClicked( int ) ) );
 
+        QPixmap pixmap(":/processes.png");
+        QIcon ButtonIcon(pixmap);
+        ui->Processes_Button->setIcon(ButtonIcon);
+        ui->Processes_Button->setIconSize(QSize(20, 20));
+
+        QPixmap pixmap1(":/cpu.png");
+        QIcon ButtonIcon1(pixmap1);
+        ui->CPU_Button->setIcon(ButtonIcon1);
+        ui->CPU_Button->setIconSize(QSize(20, 20));
+
+        QPixmap pixmap2(":/memory.png");
+        QIcon ButtonIcon2(pixmap2);
+        ui->Memory_Button->setIcon(ButtonIcon2);
+        ui->Memory_Button->setIconSize(QSize(20, 20));
+
+        QPixmap pixmap3(":/aboutus.png");
+        QIcon ButtonIcon3(pixmap3);
+        ui->AboutUs_Button->setIcon(ButtonIcon3);
+        ui->AboutUs_Button->setIconSize(QSize(20, 20));
+
+//        QPixmap pixmap(":/processes.png");
+//        QIcon ButtonIcon(pixmap);
+//        ui->Processes_Button->setIcon(ButtonIcon);
+//        ui->Processes_Button->setIconSize(QSize(30, 30));
 
         ui->plot->addGraph();
         ui->plot_2->addGraph();

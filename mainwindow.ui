@@ -17,40 +17,40 @@
    <widget class="QPushButton" name="AboutUs_Button">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>450</x>
       <y>0</y>
-      <width>101</width>
-      <height>31</height>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>About Us</string>
+     <string>  About Us</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Memory_Button">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>300</x>
       <y>0</y>
-      <width>101</width>
-      <height>31</height>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Memory</string>
+     <string>  Memory</string>
     </property>
    </widget>
    <widget class="QPushButton" name="CPU_Button">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>150</x>
       <y>0</y>
-      <width>101</width>
-      <height>31</height>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>CPU</string>
+     <string>  CPU</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Processes_Button">
@@ -58,19 +58,19 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>101</width>
-      <height>31</height>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Processes</string>
+     <string>  Processes</string>
     </property>
    </widget>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>30</y>
+      <y>40</y>
       <width>911</width>
       <height>581</height>
      </rect>

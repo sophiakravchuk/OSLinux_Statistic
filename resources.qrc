@@ -1,5 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
   <file>icon.png</file>
+  <file>processes.png</file>
+  <file>memory.png</file>
+  <file>help.png</file>
+  <file>aboutus.png</file>
+  <file>cpu.png</file>
 </qresource>
 </RCC>
