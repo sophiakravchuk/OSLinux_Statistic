@@ -8,7 +8,9 @@
 #include <QtDebug>
 #include <QFileInfo>
 
+
 #include "structures.h"
+#include "qcustomplot.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -36,8 +38,7 @@ public:
     void update_database();
     void update_proc_graph();
     QVector<double> load_points_proc(std::string data_type);
-    void draw_graph_3(QVector<double> x_ax, QVector<double> y_ax);
-    void draw_graph_4(QVector<double> x_ax, QVector<double> y_ax);
+    void draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_ind, std::string color_brush, std::string color_pen);
 
 private slots:
 
@@ -56,14 +57,15 @@ private slots:
 
     void on_AboutUs_Button_clicked();
 
+    void on_kill_this_proc_clicked();
+
 private:
+    std::vector<QCustomPlot*> plts;
     std::string process_right_clicked;
     int pid_right_clicked;
     int updating_t;
     Ui::MainWindow *ui;
     int pushed_time_checkpoints = 0;
-    void draw_graph(QVector<double> x_ax, QVector<double> y_ax);
-    void draw_graph_2(QVector<double> x_ax, QVector<double> y_ax);
     QVector<double> load_points_cpu();
     QVector<double> load_points_mem();
     std::map<std::string, std::string> color_map = {

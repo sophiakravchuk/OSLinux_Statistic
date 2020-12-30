@@ -10,10 +10,12 @@ int main(int argc, char *argv[])
 {
 
     QApplication a(argc, argv);
+    a.setApplicationName("SOrrel JUice");
     MainWindow w;
 
     w.show();
     w.setWindowIcon(QIcon(":/icon.png"));
+    w.setWindowTitle("SOrrel JUice");
 
     return a.exec();
 }

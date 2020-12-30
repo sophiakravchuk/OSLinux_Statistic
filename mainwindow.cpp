@@ -86,6 +86,10 @@ MainWindow::MainWindow(QWidget *parent)
         ui->plot_2->addGraph();
         ui->plot_3->addGraph();
         ui->plot_4->addGraph();
+        plts.push_back(ui->plot);
+        plts.push_back(ui->plot_2);
+        plts.push_back(ui->plot_3);
+        plts.push_back(ui->plot_4);
         update_database();
 
     }
@@ -143,8 +147,8 @@ void MainWindow::update_table() {
                 QTableWidgetItem *pCell6 = ui->tableWidget->item(i, 6);
                 pCell6->setText((std::to_string(all_tasks_info[i].mem_percentage) + " %").c_str());
 
-                int cpu25 = (all_tasks_info[i].cpu_usage >25) ? 1 : 0;
-                int mem25 = (all_tasks_info[i].mem_percentage >25) ? 1 : 0;
+                int cpu25 = (all_tasks_info[i].cpu_usage >=25) ? 1 : 0;
+                int mem25 = (all_tasks_info[i].mem_percentage >=25) ? 1 : 0;
                 if (cpu25 || mem25){
                     double val = cpu25 ? all_tasks_info[i].cpu_usage : all_tasks_info[i].mem_percentage;
                     char color = cpu25 ? 'g' : 'p';
@@ -156,7 +160,7 @@ void MainWindow::update_table() {
                     if (val >= 90){
                         range_percent = 4;
                     } else {
-                        while (val > 25){
+                        while (val >= 25){
                             val -= 25;
                             range_percent++;
                         }
@@ -336,7 +340,7 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     int size_of_words = finfo1.process_name.size() < finfo2.process_name.size() ? finfo1.process_name.size(): finfo2.process_name.size();
                     for(int i = 0; i < size_of_words; i++){
-                        bool not_lowered = finfo1.process_name[i] < finfo2.process_name[i];
+                        bool not_lowered = finfo1.process_name[i] > finfo2.process_name[i];
                         bool lowered1 = std::tolower(finfo1.process_name[i]) < std::tolower(finfo2.process_name[i]);
                         bool lowered2 = std::tolower(finfo2.process_name[i]) < std::tolower(finfo1.process_name[i]);
                         if (finfo1.process_name[i] == finfo2.process_name[i]){
@@ -347,14 +351,14 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
                             return lowered1;
                         }
                     }
-                    return finfo1.process_name < finfo2.process_name;
+                    return finfo1.process_name > finfo2.process_name;
                 });
         }
         else if (sort_flags.name == 0) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
                     int size_of_words = finfo1.process_name.size() < finfo2.process_name.size() ? finfo1.process_name.size(): finfo2.process_name.size();
                     for(int i = 0; i < size_of_words; i++){
-                        bool not_lowered = finfo1.process_name[i] > finfo2.process_name[i];
+                        bool not_lowered = finfo1.process_name[i] < finfo2.process_name[i];
                         bool lowered1 = std::tolower(finfo1.process_name[i]) > std::tolower(finfo2.process_name[i]);
                         bool lowered2 = std::tolower(finfo2.process_name[i]) > std::tolower(finfo1.process_name[i]);
                         if (finfo1.process_name[i] == finfo2.process_name[i]){
@@ -365,7 +369,7 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
                             return lowered1;
                         }
                     }
-                    return finfo1.process_name > finfo2.process_name;
+                    return finfo1.process_name < finfo2.process_name;
                 });
         }
     }
@@ -400,13 +404,13 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
     else if (sort_flags.cpu_u != -1) {
         if (sort_flags.cpu_u == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                    return finfo1.cpu_usage > finfo2.cpu_usage;
+                    return finfo1.cpu_usage < finfo2.cpu_usage;
                 });
             return;
         }
         else if (sort_flags.cpu_u == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                return finfo1.cpu_usage < finfo2.cpu_usage;
+                return finfo1.cpu_usage > finfo2.cpu_usage;
             });
         }
     }
@@ -414,13 +418,13 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
     else if (sort_flags.virt != -1) {
         if (sort_flags.virt == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                    return finfo1.vm_size > finfo2.vm_size;
+                    return finfo1.vm_size < finfo2.vm_size;
                 });
             return;
         }
         else if (sort_flags.virt == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                return finfo1.vm_size < finfo2.vm_size;
+                return finfo1.vm_size > finfo2.vm_size;
             });
         }
     }
@@ -428,13 +432,13 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
     else if (sort_flags.pss != -1) {
         if (sort_flags.pss == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                    return finfo1.pss > finfo2.pss;
+                    return finfo1.pss < finfo2.pss;
                 });
             return;
         }
         else if (sort_flags.pss == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                return finfo1.pss < finfo2.pss;
+                return finfo1.pss > finfo2.pss;
             });
         }
     }
@@ -442,13 +446,13 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
     else if (sort_flags.mem_p != -1) {
         if (sort_flags.mem_p == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                    return finfo1.mem_percentage > finfo2.mem_percentage;
+                    return finfo1.mem_percentage < finfo2.mem_percentage;
                 });
             return;
         }
         else if (sort_flags.mem_p == 0) {
         std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
-                return finfo1.mem_percentage < finfo2.mem_percentage;
+                return finfo1.mem_percentage > finfo2.mem_percentage;
             });
         }
     }
@@ -587,8 +591,10 @@ void MainWindow::update_proc_graph(){
         x_ax_cpu.append(i);
     }
 
-    draw_graph_3(x_ax_cpu, y_ax_cpu);
+    draw_graph(x_ax_cpu, y_ax_cpu, 2, "3g", "4g");
+
     ui->UsedCpuText_2->setText(QString::number(y_ax_cpu[y_ax_cpu.size()-1]*constinf.cpu_cores) + "%");
+    ui->UsedCpuText_3->setText(QString::number(y_ax_cpu[y_ax_cpu.size()-1]) + "%");
 
     QVector<double> y_ax_mem = load_points_proc("mem");
     QVector<double> x_ax_mem;
@@ -596,52 +602,27 @@ void MainWindow::update_proc_graph(){
     for(int i = 0; i < y_ax_mem.size(); i++){
         x_ax_mem.append(i);
     }
+    draw_graph(x_ax_mem, y_ax_mem, 3, "3p", "4p");
 
-    draw_graph_4(x_ax_mem, y_ax_mem);
     ui->UsedMemText_2->setText(QString::number(y_ax_mem[y_ax_mem.size()-1]) + "%");
+    ui->Title_2->setText(QString::fromStdString(process_right_clicked+" ("+std::to_string(pid_right_clicked)+")"));
 }
 
-void MainWindow::draw_graph_3(QVector<double> x_ax, QVector<double> y_ax) {
-    ui->plot_3->graph(0)->clearData();
-    ui->plot_3->graph(0)->setData(x_ax, y_ax);
-    ui->plot_3->xAxis->setRange(0, x_ax.size());
-    ui->plot_3->xAxis->setVisible(false);
-    ui->plot_3->graph(0)->setBrush(QColor(15, 109, 28));
 
+void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_ind, std::string color_brush, std::string color_pen){
+    plts[plt_ind]->graph(0)->clearData();
+    plts[plt_ind]->graph(0)->setData(x_ax, y_ax);
+    plts[plt_ind]->xAxis->setRange(0, x_ax.size());
+    plts[plt_ind]->xAxis->setVisible(false);
 
-    ui->plot_3->yAxis->setRange(0, 100);
-    ui->plot_3->replot();
-    ui->plot_3->update();
+    plts[plt_ind]->graph(0)->setBrush(QColor(color_map[color_brush].c_str()));
+    plts[plt_ind]->graph(0)->setPen(QColor(color_map[color_pen].c_str()));
+
+    plts[plt_ind]->yAxis->setRange(0, 100);
+    plts[plt_ind]->replot();
+    plts[plt_ind]->update();
 }
 
-void MainWindow::draw_graph_4(QVector<double> x_ax, QVector<double> y_ax) {
-    ui->plot_4->graph(0)->clearData();
-    ui->plot_4->graph(0)->setData(x_ax, y_ax);
-    ui->plot_4->xAxis->setRange(0, x_ax.size());
-    ui->plot_4->xAxis->setVisible(false);
-
-    ui->plot_4->graph(0)->setBrush(QBrush("purple"));
-
-    ui->plot_4->yAxis->setRange(0, 100);
-    ui->plot_4->replot();
-    ui->plot_4->update();
-}
-
-void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax) {
-    ui->plot->graph(0)->clearData();
-    ui->plot->graph(0)->setData(x_ax, y_ax);
-    ui->plot->xAxis->setRange(0, x_ax.size());
-    ui->plot->xAxis->setVisible(false);
-//    QColor color(20+200/4.0*gi,70*(1.6-gi/4.0), 150, 150);
-
-    ui->plot->graph(0)->setBrush(QColor(15, 109, 28));
-
-
-
-    ui->plot->yAxis->setRange(0, 100);
-    ui->plot->replot();
-    ui->plot->update();
-}
 
 QVector<double> MainWindow::load_points_cpu(){
     QString query = "SELECT "
@@ -675,7 +656,7 @@ void MainWindow::update_cpu_graph() {
         x_ax.append(i);
     }
 
-    draw_graph(x_ax, y_ax);
+    draw_graph(x_ax, y_ax, 0, "3g", "4g");
     ui->CP_usage_text->setText(QString::number(y_ax[y_ax.size()-1]) + "%");
     ui->NameText->setText(QString::fromStdString(constinf.cpu_name));
     ui->NumbOfCorsText->setText(QString::number(constinf.cpu_cores));
@@ -687,23 +668,6 @@ void MainWindow::update_cpu_graph() {
     QString uptime = QString::fromStdString(seconds_to_time(uptime_int));
     ui->WorkingTimeText->setText(uptime);
     ui->NumbOfProcsText->setText(QString::number(all_tasks_info.size()));
-}
-
-
-void MainWindow::draw_graph_2(QVector<double> x_ax, QVector<double> y_ax) {
-    ui->plot_2->graph(0)->clearData();
-    ui->plot_2->graph(0)->setData(x_ax, y_ax);
-    ui->plot_2->xAxis->setRange(0, x_ax.size());
-    ui->plot_2->xAxis->setVisible(false);
-//    QColor color(20+200/4.0*gi,70*(1.6-gi/4.0), 150, 150);
-
-//    ui->plot->graph(0)->setBrush(QColor(15, 109, 28));
-    ui->plot_2->graph(0)->setBrush(QBrush("purple"));
-
-
-    ui->plot_2->yAxis->setRange(0, 100);
-    ui->plot_2->replot();
-    ui->plot_2->update();
 }
 
 
@@ -739,8 +703,7 @@ void MainWindow::update_mem_graph() {
     for(int i = 0; i < y_ax.size(); i++){
         x_ax.append(i);
     }
-
-    draw_graph_2(x_ax, y_ax);
+    draw_graph(x_ax, y_ax, 1, "3p", "4p");
 
     std::vector<std::string> key_word = {"MemTotal", "MemFree", "MemAvailable", "Cached", "SwapCached"};
     std::map<std::string, std::string> mem_key_map;
@@ -793,6 +756,7 @@ void MainWindow::on_Processes_Button_clicked()
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
+    actv_wind.graph_proc = 0;
     ui->stackedWidget->setCurrentIndex(1);
     render_window();
 }
@@ -806,6 +770,7 @@ void MainWindow::on_CPU_Button_clicked()
     actv_wind.cpu = 1;
     actv_wind.memory = 0;
     actv_wind.about_us = 0;
+    actv_wind.graph_proc = 0;
     ui->stackedWidget->setCurrentIndex(2);
     render_window();
 }
@@ -816,6 +781,7 @@ void MainWindow::on_Memory_Button_clicked()
     actv_wind.cpu = 0;
     actv_wind.memory = 1;
     actv_wind.about_us = 0;
+    actv_wind.graph_proc = 0;
     ui->stackedWidget->setCurrentIndex(3);
     render_window();
 }
@@ -825,7 +791,20 @@ void MainWindow::on_AboutUs_Button_clicked()
     actv_wind.processes = 0;
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
+    actv_wind.graph_proc = 0;
     actv_wind.about_us = 1;
     ui->stackedWidget->setCurrentIndex(5);
     render_window();
+}
+
+void MainWindow::on_kill_this_proc_clicked()
+{
+    actv_wind.processes = 1;
+    actv_wind.cpu = 0;
+    actv_wind.memory = 0;
+    actv_wind.about_us = 0;
+    actv_wind.graph_proc = 0;
+    ui->stackedWidget->setCurrentIndex(1);
+    render_window();
+    slotKill();
 }
