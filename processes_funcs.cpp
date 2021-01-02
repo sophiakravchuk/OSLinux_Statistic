@@ -8,6 +8,14 @@
 
 
 void MainWindow::on_myTable_sectionClicked(int index) {
+    /**
+    * @brief This function checks index and based on it indicated how to sort
+    * table with data
+    * The function has parameters as follows:
+    *
+    * @param index
+    * This parameter is a integer that is used to choose sorting
+    */
     switch (index) {
         case (0): {
             sort_flags.name += 1;
@@ -95,6 +103,14 @@ void MainWindow::on_myTable_sectionClicked(int index) {
 
 
 void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_tasks_info) {
+    /**
+    * @brief This function sorts table with data.
+    * The function has parameters as follows:
+    *
+    * @param all_tasks_info
+    * This parameter is a vector of task_manager_file_info that contains
+    * all the rows data of the table
+    */
     if (sort_flags.name != -1) {
         if (sort_flags.name == 1) {
             std::sort(all_tasks_info->begin(), all_tasks_info->end(), [](struct task_manager_file_info finfo1, struct task_manager_file_info finfo2) {
@@ -225,6 +241,14 @@ void MainWindow::sort_table(std::vector<struct task_manager_file_info>* all_task
 
 
 void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
+    /**
+    * @brief This function is called on right click and opens
+    * a small manu.
+    * The function has parameters as follows:
+    *
+    * @param e
+    * This parameter is QContextMenuEvent
+    */
     if(updating_t){
         return;
     }
@@ -257,6 +281,10 @@ void MainWindow::contextMenuEvent( QContextMenuEvent * e ) {
 
 
 void MainWindow::update_table() {
+    /**
+    * @brief This function updates table with data.
+    * The function has parameters as follows:
+    */
         /*add rows and columns*/
         ui->tableWidget->setRowCount(all_tasks_info.size());
 
