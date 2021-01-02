@@ -9,6 +9,9 @@
 #include "structures.h"
 
 double get_cpu_Hz() {
+    /**
+    * @brief This function reads from /proc and returns CPU frequency in Hz 
+    */
     std::vector<std::string> key_words_cpu = {"cpu MHz"};
     std::map<std::string, std::string> values;
     get_values_from_file(&values, key_words_cpu, "/proc/cpuinfo");
@@ -19,6 +22,9 @@ double get_cpu_Hz() {
 }
 
 long get_mem_total() {
+    /**
+    * @brief This function reads from /proc and returns total amount of memory 
+    */
     std::vector<std::string> key_word = {"MemTotal"};
     std::map<std::string, std::string> mem_key_map;
     get_values_from_file(&mem_key_map, key_word, "/proc/meminfo");
@@ -34,6 +40,17 @@ long get_mem_total() {
 }
 
 void get_cpu_and_name(struct task_manager_file_info* finfo,std::string file_path){
+    /**
+    * @brief This function reads from file in /proc dir and save cpu and name
+    * to task_manager_file_info structure
+    * The function has parameters as follows:
+    *
+    * @param finfo
+    * This parameter is task_manager_file_info structure instance where the data will be stored
+    * 
+    * @param file_path
+    * This parameter is a std::string of file from which data will be taken.
+    */
     std::vector<std::string> uptime_vec = read_file_to_vector("/proc/uptime");
     int uptime = 0;
     if (!uptime_vec.empty()){
@@ -71,6 +88,10 @@ void get_cpu_and_name(struct task_manager_file_info* finfo,std::string file_path
 }
 
 std::map<std::string, std::string> get_constant_info(){
+    /**
+    * @brief This function reads from /proc/cpuinfo and returns a map with data 
+    * about cpu cores and cpu model
+    */
     std::vector<std::string> key_words = {"cpu cores", "model name"};
     std::map<std::string, std::string> cpuinfo_key_map;
     get_values_from_file(&cpuinfo_key_map, key_words, "/proc/cpuinfo");
@@ -79,6 +100,20 @@ std::map<std::string, std::string> get_constant_info(){
 
 
 void get_memory_info(struct task_manager_file_info* finfo, std::string file_path, long mem_total){
+    /**
+    * @brief This function reads from file in /proc dir and save memory data 
+    * to task_manager_file_info structure
+    * The function has parameters as follows:
+    *
+    * @param finfo
+    * This parameter is task_manager_file_info structure instance where the data will be stored
+    * 
+    * @param file_path
+    * This parameter is a std::string of file from which data will be taken.
+    * 
+    * @param mem_total
+    * This parameter is a long integer of total memory.
+    */
     std::vector<std::string> key_words = {"Pss", "VmSize"};
     std::vector<std::string> smaps_key_words = {"Pss"};
     std::vector<std::string> status_key_words = {"VmSize"};
@@ -107,6 +142,17 @@ void get_memory_info(struct task_manager_file_info* finfo, std::string file_path
 
 
 void get_proc_state(struct task_manager_file_info* finfo, std::string file_path){
+    /**
+    * @brief This function reads from file in /proc dir and save proc state
+    * to task_manager_file_info structure
+    * The function has parameters as follows:
+    *
+    * @param finfo
+    * This parameter is task_manager_file_info structure instance where the data will be stored
+    * 
+    * @param file_path
+    * This parameter is a std::string of file from which data will be taken.
+    */
     std::vector<std::string> key_words = {"State"};
     std::map<std::string, std::string> mem_keys_map;
     get_values_from_file(&mem_keys_map, key_words, file_path + "/status");
