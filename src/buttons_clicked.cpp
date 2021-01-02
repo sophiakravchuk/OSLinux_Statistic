@@ -22,10 +22,10 @@ void MainWindow::on_Processes_Button_clicked() {
 
     for(auto btn: btns){
         if(btn == ui->Processes_Button){
-            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
@@ -52,10 +52,10 @@ void MainWindow::on_CPU_Button_clicked() {
 
     for(auto btn: btns){
         if(btn == ui->CPU_Button){
-            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
@@ -81,10 +81,10 @@ void MainWindow::on_Memory_Button_clicked() {
 
     for(auto btn: btns){
         if(btn == ui->Memory_Button){
-            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
@@ -110,10 +110,10 @@ void MainWindow::on_AboutUs_Button_clicked() {
 
     for(auto btn: btns){
         if(btn == ui->AboutUs_Button){
-            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
@@ -157,10 +157,10 @@ void MainWindow::on_Help_Button_clicked() {
     ui->stackedWidget->setCurrentIndex(6);
     for(auto btn: btns){
         if(btn == ui->Help_Button){
-            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + "; "+ "color: " + theme_text_color + ";}";
             btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);

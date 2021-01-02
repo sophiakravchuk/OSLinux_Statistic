@@ -1,11 +1,11 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-  <file>icon.png</file>
-  <file>processes.png</file>
-  <file>memory.png</file>
-  <file>help.png</file>
-  <file>aboutus.png</file>
-  <file>cpu.png</file>
-  <file>dark_theme.png</file>
+  <file>photos/icon.png</file>
+  <file>photos/processes.png</file>
+  <file>photos/memory.png</file>
+  <file>photos/help.png</file>
+  <file>photos/aboutus.png</file>
+  <file>photos/cpu.png</file>
+  <file>photos/dark_theme.png</file>
 </qresource>
 </RCC>
