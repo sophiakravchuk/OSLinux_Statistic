@@ -17,7 +17,7 @@ SOURCES += \
     src/processes_funcs.cpp \
     src/reading_from_file.cpp \
     src/parse_proc_dir.cpp\
-    qcustomplot/qcustomplot.cpp \
+    qcustomplot.cpp \
     src/right_click_slots.cpp \
     src/update_pages.cpp \
     src/work_with_graphs.cpp
@@ -29,7 +29,7 @@ HEADERS += \
     headers/reading_from_file.h \
     headers/parse_proc_dir.h \
     headers/structures.h \
-    qcustomplot/qcustomplot.h
+    qcustomplot.h
 
 
 FORMS += \

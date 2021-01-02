@@ -10,7 +10,7 @@
 
 
 #include "headers/structures.h"
-#include "qcustomplot/qcustomplot.h"
+#include "qcustomplot.h"
 
 
 QT_BEGIN_NAMESPACE
