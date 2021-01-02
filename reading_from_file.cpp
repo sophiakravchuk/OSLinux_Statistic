@@ -8,6 +8,19 @@
 #include <fcntl.h>
 
 void get_values_from_file(std::map<std::string, std::string>* values, std::vector<std::string> key_words, const std::string& path_to_file){
+    /**
+    * @brief This function reads from file and saves needed values form file to map. 
+    * The function has parameters as follows:
+    *
+    * @param values
+    * This parameter is a map of strings where all values will be stored.
+    * 
+    * @param key_words
+    * This parameter is a vector of key words that will be used to identify which data from file is needed.
+    * 
+    * @param path_to_file
+    * This parameter is a std::string which represents path to file.
+    */
     std::fstream newfile;
     newfile.open(path_to_file, std::ios::in);
     if (newfile.is_open()){
@@ -36,6 +49,13 @@ void get_values_from_file(std::map<std::string, std::string>* values, std::vecto
 
 
 std::vector<std::string> read_file_to_vector(const std::string& path_to_file){
+    /**
+    * @brief This function reads from file and returns vector with data from file. 
+    * The function has parameters as follows:
+    *
+    * @param path_to_file
+    * This parameter is a std::string which represents path to file.
+    */
     int fd = open(path_to_file.c_str(), O_RDONLY);
         std::vector<std::string> values;
 
