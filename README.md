@@ -4,10 +4,11 @@
 Sophia Kravchuk, Julia Pochynok, Sophia Haletska
 
 ## Description
-SOrrel JUice is a simple task manager that uses file system /proc to get the information about the current state of your OS.
+**SOrrel JUice** is a simple task manager that uses file system /proc to get the information about the current state of your OS.
 
-<img src="https://github.com/sophiakravchuk/OSLinux_Statistics/blob/master/photos/icon.png" width="200" height="200" margin-left="100px" margin-right="100px" />
-
+<p align="center">
+<img src="https://github.com/sophiakravchuk/OSLinux_Statistics/blob/master/photos/icon.png" width="150" height="150"/>
+</p>
 
 ## Data
 Output of various characteristics of the OS state - CPU usage, memory, number of processes, open files, etc. is taken from FS /proc.
