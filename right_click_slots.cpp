@@ -1,9 +1,9 @@
 #include "iostream"
 #include "signal.h"
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "structures.h"
+#include "headers/structures.h"
 
 
 void MainWindow::slotKill(){

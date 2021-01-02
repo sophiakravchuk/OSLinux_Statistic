@@ -9,8 +9,8 @@
 #include <QFileInfo>
 
 
-#include "structures.h"
-#include "qcustomplot.h"
+#include "headers/structures.h"
+#include "qcustomplot/qcustomplot.h"
 
 
 QT_BEGIN_NAMESPACE

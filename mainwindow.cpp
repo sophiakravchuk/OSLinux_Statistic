@@ -21,12 +21,12 @@
 
 #include <boost/algorithm/string/trim.hpp>
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "additional_functions.h"
-#include "parse_proc_dir.h"
-#include "structures.h"
-#include "reading_from_file.h"
+#include "headers/additional_functions.h"
+#include "headers/parse_proc_dir.h"
+#include "headers/structures.h"
+#include "headers/reading_from_file.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -88,37 +88,37 @@ MainWindow::MainWindow(QWidget *parent)
         QObject::connect( ui->tableWidget->horizontalHeader(), SIGNAL( sectionClicked( int ) ), this, SLOT( on_myTable_sectionClicked( int ) ) );
 
         // add processes icon on the processes table
-        QPixmap pixmap(":/processes.png");
+        QPixmap pixmap(":/photos/processes.png");
         QIcon ButtonIcon(pixmap);
         ui->Processes_Button->setIcon(ButtonIcon);
         ui->Processes_Button->setIconSize(QSize(20, 20));
 
         // add cpu icon on the processes table
-        QPixmap pixmap1(":/cpu.png");
+        QPixmap pixmap1(":/photos/cpu.png");
         QIcon ButtonIcon1(pixmap1);
         ui->CPU_Button->setIcon(ButtonIcon1);
         ui->CPU_Button->setIconSize(QSize(20, 20));
         
         // add memory icon on the processes table
-        QPixmap pixmap2(":/memory.png");
+        QPixmap pixmap2(":/photos/memory.png");
         QIcon ButtonIcon2(pixmap2);
         ui->Memory_Button->setIcon(ButtonIcon2);
         ui->Memory_Button->setIconSize(QSize(20, 20));
 
         // add about us icon on the processes table
-        QPixmap pixmap3(":/aboutus.png");
+        QPixmap pixmap3(":/photos/aboutus.png");
         QIcon ButtonIcon3(pixmap3);
         ui->AboutUs_Button->setIcon(ButtonIcon3);
         ui->AboutUs_Button->setIconSize(QSize(20, 20));
 
         // add help icon on the processes table
-        QPixmap pixmap4(":/help.png");
+        QPixmap pixmap4(":/photos/help.png");
         QIcon ButtonIcon4(pixmap4);
         ui->Help_Button->setIcon(ButtonIcon4);
         ui->Help_Button->setIconSize(QSize(25, 25));
 
         // add dark_theme icon on the processes table
-        QPixmap pixmap5(":/dark_theme.png");
+        QPixmap pixmap5(":/photos/dark_theme.png");
         QIcon ButtonIcon5(pixmap5);
         ui->DarkTheme->setIcon(ButtonIcon5);
         ui->DarkTheme->setIconSize(QSize(25, 25));

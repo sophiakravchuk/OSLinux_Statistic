@@ -3,10 +3,10 @@
 
 #include <boost/algorithm/string/trim.hpp>
 
-#include "parse_proc_dir.h"
-#include "reading_from_file.h"
-#include "additional_functions.h"
-#include "structures.h"
+#include "headers/parse_proc_dir.h"
+#include "headers/reading_from_file.h"
+#include "headers/additional_functions.h"
+#include "headers/structures.h"
 
 double get_cpu_Hz() {
     /**

@@ -1,6 +1,6 @@
 #include <QVector>
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
 
 

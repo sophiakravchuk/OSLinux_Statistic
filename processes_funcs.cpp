@@ -2,9 +2,9 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "additional_functions.h"
+#include "headers/additional_functions.h"
 
 
 void MainWindow::on_myTable_sectionClicked(int index) {

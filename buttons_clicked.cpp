@@ -1,10 +1,10 @@
 #include <string>
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "structures.h"
-#include "reading_from_file.h"
+#include "headers/structures.h"
+#include "headers/reading_from_file.h"
 
 
 void MainWindow::on_Processes_Button_clicked() {

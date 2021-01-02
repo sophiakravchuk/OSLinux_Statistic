@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include <unistd.h>
 #include <filesystem>
 #include <QMessageBox>
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     w.show();
-    w.setWindowIcon(QIcon(":/icon.png"));
+    w.setWindowIcon(QIcon(":/photos/icon.png"));
     w.setWindowTitle("SOrrel JUice");
 
     return a.exec();

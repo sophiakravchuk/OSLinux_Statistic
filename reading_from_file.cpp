@@ -1,8 +1,8 @@
-#include "reading_from_file.h"
+#include "headers/reading_from_file.h"
 #include <iostream>
 #include <vector>
 #include <map>
-#include "additional_functions.h"
+#include "headers/additional_functions.h"
 #include <fstream>
 #include <boost/algorithm/string/trim.hpp>
 #include <fcntl.h>

@@ -1,32 +1,9 @@
-//#include <QTimer>
-//#include <QMenu>
-//#include <QContextMenuEvent>
-//#include <QLocale>
-//#include <QMessageBox>
-//#include <QtCharts/QLineSeries>
-//#include <QtCharts/QAreaSeries>
-//#include <QtCharts/QChart>
-//#include <QtCharts/QChartView>
-//#include <QtGui/QPainter>
-//#include <iostream>
-//#include <vector>
-//#include <stdio.h>
-//#include <string>
-//#include <map>
-//#include <fstream>
-//#include <filesystem>
-//#include <signal.h>
-//#include <iostream>
-//#include <ctime>
-
 #include <boost/algorithm/string/trim.hpp>
 
-#include "mainwindow.h"
+#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "additional_functions.h"
-//#include "parse_proc_dir.h"
-//#include "structures.h"
-#include "reading_from_file.h"
+#include "headers/additional_functions.h"
+#include "headers/reading_from_file.h"
 
 
 
