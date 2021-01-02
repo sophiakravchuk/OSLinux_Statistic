@@ -37,7 +37,6 @@ public:
     struct constant_info constinf;
     void update_database();
     void update_proc_graph();
-    QVector<double> load_points_proc(std::string data_type);
     void draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_ind, std::string color_brush, std::string color_pen);
 
 private slots:
@@ -74,8 +73,7 @@ private:
     int updating_t;
     Ui::MainWindow *ui;
     int pushed_time_checkpoints = 0;
-    QVector<double> load_points_cpu();
-    QVector<double> load_points_mem();
+    QVector<double> load_points(QString query, int div);
     std::string theme_highlight_color;
     std::string theme_default_color;
     std::string theme_text_color;
