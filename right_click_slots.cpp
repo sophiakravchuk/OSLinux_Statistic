@@ -7,6 +7,11 @@
 
 
 void MainWindow::slotKill(){
+    /**
+    * @brief This function show window of QMessageBox to the screen
+    * with warning or clarification that the process will be killed
+    * or cannot be killed.
+    */
     std::string delete_message = "Do you really want to kill process: ";
     delete_message += process_right_clicked + " ?";
     if (QMessageBox::warning(this,
@@ -49,6 +54,11 @@ void MainWindow::slotKill(){
 
 
 void MainWindow::slotGraph(){
+    /**
+    * @brief This function is called when user clicks on button "Graph process"
+    * in right click menu.
+    * This function leads to process individual page.
+    */
     update_proc_graph();
     actv_wind.processes = 0;
     actv_wind.cpu = 0;
