@@ -32,6 +32,11 @@
 
 
 void MainWindow::update_proc_graph(){
+    /**
+    * @brief This function undates the graphs that show
+    * the CPU usage and memory usage by particular given process 
+    * in last 100 timepoints.
+    */
     std::string a = "SELECT time_checkp, cpu_usage FROM all_finfos "
                               "WHERE pid='" + std::to_string(pid_right_clicked) + "' GROUP BY time_checkp;";
     QString query = QString::fromStdString(a);
@@ -64,6 +69,10 @@ void MainWindow::update_proc_graph(){
 
 
 void MainWindow::update_cpu_graph() {
+    /**
+    * @brief This function undates the graph that shows
+    * the total usage of CPU by all processes in last 100 timepoints.
+    */
     QString query = "SELECT "
             "time_checkp,"
             "SUM(cpu_usage) "
@@ -95,6 +104,10 @@ void MainWindow::update_cpu_graph() {
 
 
 void MainWindow::update_mem_graph() {
+    /**
+    * @brief This function undates the graph that shows
+    * the total usage of memory by all processes in last 100 timepoints.
+    */
     QString query = "SELECT "
             "time_checkp,"
             "SUM(mem_usage) "
