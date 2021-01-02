@@ -64,6 +64,8 @@ private slots:
     void on_DarkTheme_clicked();
 
 private:
+    void style_text_fields();
+    QSqlDatabase db;
     int darktheme = 0;
     std::vector<QPushButton*> btns;
     std::vector<QCustomPlot*> plts;
@@ -82,7 +84,7 @@ private:
                                                         {"2g", "#8863C132"},
                                                         {"3g", "#88358600"},
                                                         {"4g", "#880F6D1C"},
-                                                        {"1p", "#889D4EDD"},
+                                                        {"1p", "#999D4EDD"},
                                                         {"2p", "#887B2CBF"},
                                                         {"3p", "#885A189A"},
                                                         {"4p", "#883C096C"},

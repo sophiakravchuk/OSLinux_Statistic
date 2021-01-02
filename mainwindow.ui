@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="page"/>
     <widget class="QWidget" name="page_2">
@@ -744,7 +744,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="English_3">
        <attribute name="title">
@@ -767,19 +767,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;SOrrel JUice&lt;/span&gt; is a simple task manager that uses file system /proc to get the information about the current state of your OS.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;As you can see the program has four button: &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;As you can see the program has four button: &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Processes | CPU | Memory | About us&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;And also, the Help button opens the page with the instruction manual of our application.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;If you see this text, you are on the Help page.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Detailed information about each page of our application will be provided below. &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Detailed information about each page of our application will be provided below. &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;To go to any of them, use the above buttons.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Processes&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;The Processes button will redirect you to a page where you can see all the processes and information about them in the form of a table with the following columns: &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;The Processes button will redirect you to a page where you can see all the processes and information about them in the form of a table with the following columns: &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Process name,&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;process identification number, &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;process identification number, &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;process status,&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;usage of the central processor by the process in the percentage,&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;amount of virtual memory occupied by the process,&lt;/p&gt;
@@ -808,13 +808,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Process graph:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;If you select this option, you will see a page with the dynamic visualization of information about CPU and RAM used by the process you have chosen.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Also, on this page, you have the opportunity to kill the process.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CPU&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;In the CPU section you will be able to see the visualization of information about the CPU usage in the form of a graph and such information about the CPU as:&lt;br /&gt;full processor name,&lt;br /&gt;CPU usage by all processes in the percentage,&lt;br /&gt;number of processes,&lt;br /&gt;how much time has passed since the last computer reboot in the format days: hours: minutes: seconds,&lt;br /&gt;the number of processor cores.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Memory&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;In the Memory section you can see the visualization of information about the RAM usage by all processes in the form of a graph and such information about RAM as:&lt;br /&gt;the total amount of RAM in gigabytes,&lt;br /&gt;amount of memory currently used in gigabytes (in the percentage),&lt;br /&gt;the amount of free RAM,&lt;br /&gt;the amount of cached RAM on your computer.&lt;br /&gt;&lt;br /&gt;The information in the three sections mentioned above is changing dynamically. &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;About us&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;On the About us page, you can find information about the developers of this application, a brief description of the functionality, operating systems on which you can run our application and other details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -840,16 +844,16 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;SOrrel JUice&lt;/span&gt; це простий диспетчер завдань, який використовує файлову систему /proc для отримання інформації про стан вашої ОС.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Як Ви можете побачити цей застосунок має чотири кнопочки, які відповідають чотирьом доступним вам розділам.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt; Processes | CPU | Memory | About us&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt; Processes | CPU | Memory | About us&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;А також кнопку Help, яка відкриває сторінку з інструкції по експлуатації нашого застосунку.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо Ви бачите цей текст, то зараз Ви перебуваєте на сторінці Help.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Далі буде подана детальна інформація про кожну  сторінку нашого додатку. Щоб перейти на будь-яку із них скористайтеся вище згаданими кнопками.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Далі буде подана детальна інформація про кожну  сторінку нашого додатку. Щоб перейти на будь-яку із них скористайтеся вище згаданими кнопками.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Processes&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Кнопка  Processes перенаправить вас на сторінку, де ви зможете побачити всі процеси та інформацію про них у вигляді таблиці з наступними стовпцями:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Кнопка  Processes перенаправить вас на сторінку, де ви зможете побачити всі процеси та інформацію про них у вигляді таблиці з наступними стовпцями:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Назва процесу,&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;ідентифікаційний номер процесу,&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;статус процесу,&lt;/p&gt;
@@ -860,7 +864,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо натиснути будь-яке з назв стовпців, всю таблицю буде відсортовано за спаданням за параметром, на який Ви натиснули; якщо натиснути ще раз, всю таблицю буде відсортовано за зростанням.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Також рядки в таблиці можуть підсвічуватися різними відтінками трьох кольорів (зелений, фіолетовий, червоний). &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Також рядки в таблиці можуть підсвічуватися різними відтінками трьох кольорів (зелений, фіолетовий, червоний). &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо рядок зеленого кольору, то показник параметру використання центрального процесора більший за 25 %, проте використання пам'яті не перевищує цього значення.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо рядок фіолетового кольору, то, навпаки показник параметру використання пам'яті більший за 25 %, проте використання центрального процесора не перевищує цього значення.&lt;/p&gt;
@@ -878,15 +882,16 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо Ви виберете цю опцію, то спочатку наша програма видасть вам вікно підтвердження, яке перепитає Вас чи дійсно Ви хочете зупинити виконання цього процесу. Увага: якщо процес завершиться після того, як ви вирішили його вбити, але до того, як ви натиснете підтвердження, то програма видасть вам повідомлення про те, що Ви не можете завершити цей процес.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Process graph:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо Ви вибрали цю опцію, то Вам відкриється сторінка, де ви зможете спостерігати динамічну візуалізацію інформації про використання процесора та оперативної пам'яті конкретно обраним Вами процесом. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Також на цій сторінці Вам доступна можливість припинити виконання процесу. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Якщо Ви вибрали цю опцію, то Вам відкриється сторінка, де ви зможете спостерігати динамічну візуалізацію інформації про використання процесора та оперативної пам'яті конкретно обраним Вами процесом. &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;Також на цій сторінці Вам доступна можливість припинити виконання процесу. &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CPU&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;В розділі CPU Ви зможете побачити візуалізацію інформації про завантаженість процесора у вигляді графіка та таку інформацію про центральний процесор як: &lt;br /&gt;повна назва процесора&lt;br /&gt;загальна завантаженість процесами у відсотках,&lt;br /&gt;кількість процесів,&lt;br /&gt;скільки пройшло часу з останнього перезавантаження комп'ютера у форматі &lt;br /&gt;дні: години: хвилини: секунди,&lt;br /&gt;кількість ядер процесора. &lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Memory&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;В розділі Memory Ви зможете побачити візуалізацію інформації про завантаженість оперативної памяті всіма процесами у вигляді графіка та таку інформацію про оперативну пам'ять  як: &lt;br /&gt;загальна кількість оперативної пам'яті Вашого комп'ютера у гігабайтах,&lt;br /&gt;кількість пам'яті, що використовується зараз у гігабайтах (у відсотках)&lt;br /&gt;Кількість вільної оперативної пам'яті,&lt;br /&gt;кількість закешованої оперативної пам'яті Вашого комп'ютера.&lt;br /&gt;&lt;br /&gt;Інформація в трьох вищезгаданих розділах змінюється динамічно. &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;About us&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:138%;&quot;&gt;На сторінці About us, Ви можете знайти інформацію про розробників цього додатку, короткий опис функціоналу, операційні системи, на яких Ви можете запустити наш додаток та інші деталі. &lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

@@ -36,8 +36,10 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ui->setupUi(this);
 
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        std::string curr_path = std::filesystem::current_path();
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        // std::string curr_path = std::filesystem::current_path();
+        // std::string curr_path = "/run/user/1000";
+        std::string curr_path = std::filesystem::temp_directory_path();
         std::string path_to_db = curr_path + "/db.sqlite";
         if(std::filesystem::exists(path_to_db)){
             std::filesystem::remove(path_to_db);
@@ -78,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         wind_timer = new QTimer(this);
         connect(wind_timer, &QTimer::timeout, this, &MainWindow::update_database);
+        wind_timer->start(1000);
 
         ui->tableWidget->verticalHeader()->setVisible(false);
 
@@ -129,28 +132,12 @@ MainWindow::MainWindow(QWidget *parent)
         plts.push_back(ui->plot_3);
         plts.push_back(ui->plot_4);
         update_database();
-        ui->NameText->setStyleSheet(QString("background-color:'#8863C132'; font-weight: 900; "
-                                            " font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
-        ui->CP_usage_text->setStyleSheet(QString("background-color:'#289EE37D';"));
-        ui->NumbOfCorsText->setStyleSheet(QString("background-color:'#289EE37D';"));
-        ui->NumbOfProcsText->setStyleSheet(QString("background-color:'#289EE37D';"));
-        ui->WorkingTimeText->setStyleSheet(QString("background-color:'#289EE37D';"));
-
-        ui->CachedMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
-        ui->FreeMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
-        ui->TotalMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
-        ui->UsedMemText->setStyleSheet(QString("background-color:'#229D4EDD';"));
-
-
-        ui->UsedCpuText_2->setStyleSheet(QString("background-color:'#289EE37D';"));
-        ui->UsedCpuText_3->setStyleSheet(QString("background-color:'#289EE37D';"));
-        ui->UsedMemText_2->setStyleSheet(QString("background-color:'#229D4EDD';"));
-
-        ui->Title_2->setStyleSheet(QString("font-weight: 900; font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
-
+        style_text_fields();
         theme_highlight_color = "#90e0ef";
-        theme_default_color = "#ffffff";
+        theme_default_color = "#efefef";
         theme_text_color = "#000000";
+        std::string background_color = "background-color:" + theme_default_color + ";";
+        this->setStyleSheet(QString::fromStdString(background_color));
 
         on_Processes_Button_clicked();
     }
@@ -160,6 +147,33 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::style_text_fields(){
+    std::string text_c = "color:'" + theme_text_color + "';";
+    std::string cpu_text_c = "background-color:'#289EE37D'; " + text_c;
+    std::string mem_text_c = "background-color:'#229D4EDD'; " + text_c;
+
+    ui->NameText->setStyleSheet(QString("background-color:'#8863C132'; font-weight: 900; "
+                                        " font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
+
+    ui->CP_usage_text->setStyleSheet(QString(cpu_text_c.c_str()));
+    ui->NumbOfCorsText->setStyleSheet(QString(cpu_text_c.c_str()));
+    ui->NumbOfProcsText->setStyleSheet(QString(cpu_text_c.c_str()));
+    ui->WorkingTimeText->setStyleSheet(QString(cpu_text_c.c_str()));
+
+    ui->CachedMemText->setStyleSheet(QString(mem_text_c.c_str()));
+    ui->FreeMemText->setStyleSheet(QString(mem_text_c.c_str()));
+    ui->TotalMemText->setStyleSheet(QString(mem_text_c.c_str()));
+    ui->UsedMemText->setStyleSheet(QString(mem_text_c.c_str()));
+
+
+    ui->UsedCpuText_2->setStyleSheet(QString(cpu_text_c.c_str()));
+    ui->UsedCpuText_3->setStyleSheet(QString(cpu_text_c.c_str()));
+    ui->UsedMemText_2->setStyleSheet(QString(mem_text_c.c_str()));
+
+    ui->Title_2->setStyleSheet(QString("font-weight: 900; font-size: 17px;  margin-left: 250px; ;  margin-right: 250px;"));
+
+};
 
 void MainWindow::update_table() {
     int in = 0;
@@ -230,6 +244,8 @@ void MainWindow::update_table() {
                     }
                     std::string color_key = std::to_string(range_percent) + color;
                     std::string color_val = color_map[color_key];
+                    ui->tableWidget->horizontalHeader()->setStyleSheet(QString::fromStdString("color: " + theme_text_color));
+                    ui->tableWidget->verticalHeader()->setStyleSheet(QString::fromStdString("color: " + theme_text_color));
                     for (int j = 0; j < 7; j++){
                         ui->tableWidget->item(i, j)->setBackground(QBrush(QColor(color_val.c_str())));
                     }
@@ -248,16 +264,27 @@ void MainWindow::update_database(){
     time_t now = time(0);
     if (pushed_time_checkpoints >= 100){
         QString query = "DELETE FROM all_finfos WHERE time_checkp = (SELECT MIN(time_checkp) FROM all_finfos);";
-        QSqlQuery qry;
+        QSqlQuery qry(db);
         if(!qry.exec(query)){
             QMessageBox::warning(this,
                                          "Database creation",
                                          "Cannot delete checkpoint",
                                          QMessageBox::Ok);
-            return;
+            qApp->quit();
         }
         pushed_time_checkpoints--;
     }
+    QSqlQuery qry(db);
+    qry.prepare("INSERT INTO all_finfos VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+    QVariantList checkps;
+    QVariantList procnames;
+    QVariantList pids;
+    QVariantList procstates;
+    QVariantList cpuusages;
+    QVariantList vm_s;
+    QVariantList psss;
+    QVariantList memusages;
+
     for(auto &p : std::filesystem::directory_iterator("/proc/")){
         std::string file_path =p.path();
         struct task_manager_file_info finfo;
@@ -275,39 +302,39 @@ void MainWindow::update_database(){
         get_proc_state(&finfo, file_path);
 
 
-        QSqlQuery qry;
 
-        qry.prepare("INSERT INTO all_finfos VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-
-        qry.addBindValue(QString::fromStdString(std::to_string(now)));
-        qry.addBindValue(QString::fromStdString(finfo.process_name));
-        qry.addBindValue(QString::fromStdString(std::to_string(finfo.pid)));
-        qry.addBindValue(QString::fromStdString(finfo.proc_state));
-        qry.addBindValue(QString::fromStdString(std::to_string(finfo.cpu_usage)));
-        qry.addBindValue(QString::fromStdString(std::to_string(finfo.vm_size)));
-        qry.addBindValue(QString::fromStdString(std::to_string(finfo.pss)));
-        qry.addBindValue(QString::fromStdString(std::to_string(finfo.mem_percentage)));
-
-
-        if(!qry.exec()){
-            QMessageBox::warning(this,
-                                         "Database creation",
-                                         "Cannot add a row",
-                                         QMessageBox::Ok);
-            qApp->quit();
-        }
-
+        checkps << QString::fromStdString(std::to_string(now));
+        procnames << QString::fromStdString(finfo.process_name);
+        pids << QString::fromStdString(std::to_string(finfo.pid));
+        procstates << QString::fromStdString(finfo.proc_state);
+        cpuusages << QString::fromStdString(std::to_string(finfo.cpu_usage));
+        vm_s << QString::fromStdString(std::to_string(finfo.vm_size));
+        psss << QString::fromStdString(std::to_string(finfo.pss));
+        memusages << QString::fromStdString(std::to_string(finfo.mem_percentage));
 
         all_tasks_info.push_back(finfo);
 
+    }
+    qry.addBindValue(checkps);
+    qry.addBindValue(procnames);
+    qry.addBindValue(pids);
+    qry.addBindValue(procstates);
+    qry.addBindValue(cpuusages);
+    qry.addBindValue(vm_s);
+    qry.addBindValue(psss);
+    qry.addBindValue(memusages);
 
+    if(!qry.execBatch()){
+        QMessageBox::warning(this,
+                                     "Database creation",
+                                     "Cannot add a row",
+                                     QMessageBox::Ok);
+        qApp->quit();
     }
 
-    pushed_time_checkpoints++;
-    std::cout << pushed_time_checkpoints << std::endl;
-    wind_timer->start(50);
-    render_window();
 
+    pushed_time_checkpoints++;
+    render_window();
 }
 
 void MainWindow::on_myTable_sectionClicked(int index) {
@@ -666,10 +693,11 @@ void MainWindow::update_proc_graph(){
     for(int i = 0; i < y_ax_mem.size(); i++){
         x_ax_mem.append(i);
     }
-    draw_graph(x_ax_mem, y_ax_mem, 3, "3p", "4p");
+    draw_graph(x_ax_mem, y_ax_mem, 3, "1p", "4p");
 
     ui->UsedMemText_2->setText(QString::number(y_ax_mem[y_ax_mem.size()-1]) + "%");
     ui->Title_2->setText(QString::fromStdString(process_right_clicked+" ("+std::to_string(pid_right_clicked)+")"));
+    style_text_fields();
 }
 
 
@@ -681,6 +709,13 @@ void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_
 
     plts[plt_ind]->graph(0)->setBrush(QColor(color_map[color_brush].c_str()));
     plts[plt_ind]->graph(0)->setPen(QColor(color_map[color_pen].c_str()));
+    plts[plt_ind]->setBackground(QBrush(theme_default_color.c_str()));
+
+    plts[plt_ind]->yAxis->setBasePen(QPen(QColor(theme_text_color.c_str())));
+    plts[plt_ind]->yAxis->setTickLabelColor(QColor(theme_text_color.c_str()));
+    plts[plt_ind]->yAxis->setLabelColor(QColor(theme_text_color.c_str()));
+    plts[plt_ind]->yAxis->setTickPen(QColor(theme_text_color.c_str()));
+    plts[plt_ind]->yAxis->setSubTickPen(QColor(theme_text_color.c_str()));
 
     plts[plt_ind]->yAxis->setRange(0, 100);
     plts[plt_ind]->replot();
@@ -732,6 +767,7 @@ void MainWindow::update_cpu_graph() {
     QString uptime = QString::fromStdString(seconds_to_time(uptime_int));
     ui->WorkingTimeText->setText(uptime);
     ui->NumbOfProcsText->setText(QString::number(all_tasks_info.size()));
+    style_text_fields();
 }
 
 
@@ -767,7 +803,7 @@ void MainWindow::update_mem_graph() {
     for(int i = 0; i < y_ax.size(); i++){
         x_ax.append(i);
     }
-    draw_graph(x_ax, y_ax, 1, "3p", "4p");
+    draw_graph(x_ax, y_ax, 1, "1p", "4p");
 
     std::vector<std::string> key_word = {"MemTotal", "MemFree", "MemAvailable", "Cached", "SwapCached"};
     std::map<std::string, std::string> mem_key_map;
@@ -792,6 +828,7 @@ void MainWindow::update_mem_graph() {
                                                     stol(mem_key_map["Cached"]))));
 
     ui->CachedMemText->setText(QString::fromStdString(memory_suitable_view(stol(mem_key_map["Cached"]))));
+    style_text_fields();
 }
 
 void MainWindow::render_window() {
@@ -825,14 +862,14 @@ void MainWindow::on_Processes_Button_clicked()
     ui->stackedWidget->setCurrentIndex(1);
 
     for(auto btn: btns){
-        QPalette pal = btn->palette();
         if(btn == ui->Processes_Button){
-        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
-        btn->setPalette(pal);
         btn->update();
     }
 
@@ -854,14 +891,14 @@ void MainWindow::on_CPU_Button_clicked()
     ui->stackedWidget->setCurrentIndex(2);
 
     for(auto btn: btns){
-        QPalette pal = btn->palette();
         if(btn == ui->CPU_Button){
-        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
-        btn->setPalette(pal);
         btn->update();
     }
 
@@ -879,14 +916,14 @@ void MainWindow::on_Memory_Button_clicked()
     ui->stackedWidget->setCurrentIndex(3);
 
     for(auto btn: btns){
-        QPalette pal = btn->palette();
         if(btn == ui->Memory_Button){
-        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
-        btn->setPalette(pal);
         btn->update();
     }
 
@@ -904,14 +941,14 @@ void MainWindow::on_AboutUs_Button_clicked()
     ui->stackedWidget->setCurrentIndex(5);
 
     for(auto btn: btns){
-        QPalette pal = btn->palette();
         if(btn == ui->AboutUs_Button){
-        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
-        btn->setPalette(pal);
         btn->update();
     }
 
@@ -941,14 +978,14 @@ void MainWindow::on_Help_Button_clicked()
     actv_wind.help = 1;
     ui->stackedWidget->setCurrentIndex(6);
     for(auto btn: btns){
-        QPalette pal = btn->palette();
         if(btn == ui->Help_Button){
-        pal.setColor(QPalette::Button, QColor(theme_highlight_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_highlight_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         } else {
-        pal.setColor(QPalette::Button, QColor(theme_default_color.c_str()));
+            std::string text_button_c = "QPushButton {background-color: " + theme_default_color + ";}";
+            btn->setStyleSheet(QString::fromStdString(text_button_c));
         }
         btn->setAutoFillBackground(true);
-        btn->setPalette(pal);
         btn->update();
     }
 
@@ -960,7 +997,7 @@ void MainWindow::on_DarkTheme_clicked()
     if (darktheme){
         darktheme = 0;
         theme_highlight_color = "#90e0ef";
-        theme_default_color = "#ffffff";
+        theme_default_color = "#efefef";
         theme_text_color = "#000000";
     } else {
         darktheme = 1;
