@@ -8,12 +8,29 @@
 
 
 bool is_number(const std::string& s) {
+    /**
+    * @brief This function checks if given string is a number. Returns boolen value. 
+    * The function has parameters as follows:
+    *
+    * @param s
+    * This parameter is a std::string which needs to be checked.
+    */
     std::string::const_iterator it = s.begin();
     while (it != s.end() && std::isdigit(*it)) ++it;
     return !s.empty() && it == s.end();
 }
 
 std::vector<std::string> split(std::string s, const std::string& delimiter) {
+    /**
+    * @brief This function splits a given string by delimiter and returns a vector of splited strings. 
+    * The function has parameters as follows:
+    *
+    * @param s
+    * This parameter is a std::string which needs to be splited.
+    * 
+    * @param delimiter
+    * This parameter is a std::string delimiter that is used as a split point.
+    */
     size_t pos = 0;
     std::string token;
     std::vector<std::string> words;
@@ -31,6 +48,16 @@ std::vector<std::string> split(std::string s, const std::string& delimiter) {
 }
 
 std::string double_to_string_precision(double number, int percision){
+    /**
+    * @brief This function converts double value to string with given precision
+    * The function has parameters as follows:
+    *
+    * @param number
+    * This parameter is a double value that needs to be converted.
+    * 
+    * @param percision
+    * This parameter is a int precision that gives the number of values needed after coma.
+    */
     std::string s;
     std::stringstream sstream;
     sstream.setf(std::ios::fixed);
@@ -42,6 +69,13 @@ std::string double_to_string_precision(double number, int percision){
 
 
 std::string memory_suitable_view(long mem_size){
+    /**
+    * @brief This function converts a number of Kb to Kb, Mb or Gb.
+    * The function has parameters as follows:
+    *
+    * @param mem_size
+    * This parameter is long number of Kb that will be converted.
+    */
     long double mem_size_d = (long double) mem_size;
     int div_count = 0;
     while (mem_size_d > 1000){
@@ -63,6 +97,13 @@ std::string memory_suitable_view(long mem_size){
 }
 
 std::string seconds_to_time(int seconds){
+    /**
+    * @brief This function converts a number of seconds to days:hours:minutes:seconds form.
+    * The function has parameters as follows:
+    *
+    * @param seconds
+    * This parameter is int number of seconds that will be converted.
+    */
     int m = 0;
     int h = 0;
     int d = 0;
