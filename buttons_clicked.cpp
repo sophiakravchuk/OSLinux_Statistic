@@ -8,6 +8,10 @@
 
 
 void MainWindow::on_Processes_Button_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "Processes_Button".
+    * This function leads to processes page and highlights the button.
+    */
     actv_wind.processes = 1;
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
@@ -34,6 +38,10 @@ void MainWindow::on_Processes_Button_clicked() {
 
 
 void MainWindow::on_CPU_Button_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "CPU_Button".
+    * This function leads to the page with CPUusage graph and highlights the button.
+    */
     actv_wind.processes = 0;
     actv_wind.cpu = 1;
     actv_wind.memory = 0;
@@ -59,6 +67,10 @@ void MainWindow::on_CPU_Button_clicked() {
 
 
 void MainWindow::on_Memory_Button_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "Memory_Button".
+    * This function leads to the page with Memory usage graph and highlights the button.
+    */
     actv_wind.processes = 0;
     actv_wind.cpu = 0;
     actv_wind.memory = 1;
@@ -84,6 +96,10 @@ void MainWindow::on_Memory_Button_clicked() {
 
 
 void MainWindow::on_AboutUs_Button_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "AboutUs_Button".
+    * This function leads to the page with text about us and highlights the button.
+    */
     actv_wind.processes = 0;
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
@@ -109,6 +125,12 @@ void MainWindow::on_AboutUs_Button_clicked() {
 
 
 void MainWindow::on_kill_this_proc_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "kill_this_proc".
+    * This function leads to processes page and calls slotKill that shows the 
+    * QMessageBox that warns you about killing the process and if you confirm the action
+    * it kills the process.
+    */
     actv_wind.processes = 1;
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
@@ -122,6 +144,10 @@ void MainWindow::on_kill_this_proc_clicked() {
 
 
 void MainWindow::on_Help_Button_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "Help_Button".
+    * This function leads to the page with help text and highlights the button.
+    */
     actv_wind.processes = 0;
     actv_wind.cpu = 0;
     actv_wind.memory = 0;
@@ -146,6 +172,10 @@ void MainWindow::on_Help_Button_clicked() {
 
 
 void MainWindow::on_DarkTheme_clicked() {
+    /**
+    * @brief This function is called when user clicks on button "DarkTheme".
+    * This function changes the color theme of a whole application.
+    */
     if (darktheme){
         darktheme = 0;
         theme_highlight_color = "#90e0ef";
