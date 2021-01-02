@@ -5,6 +5,25 @@
 
 
 void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_ind, std::string color_brush, std::string color_pen){
+     /**
+    * @brief This function draws a graph with all set dots coordinates, colors etc. 
+    * The function has parameters as follows:
+    *
+    * @param x_ax
+    * This parameter is a vector of x cpprdinates of points.
+    * 
+    * @param y_ax
+    * This parameter is a vector of y cpprdinates of points.
+    * 
+    * @param plt_ind
+    * This parameter is a int that indicates which graph should be ploted
+    * 
+    * @param color_brush
+    * This parameter indicates colour of brush
+    * 
+    * @param color_pen
+    * This parameter indicates colour of pen
+    */
     plts[plt_ind]->graph(0)->clearData();
     plts[plt_ind]->graph(0)->setData(x_ax, y_ax);
     plts[plt_ind]->xAxis->setRange(0, x_ax.size());
@@ -27,6 +46,16 @@ void MainWindow::draw_graph(QVector<double> x_ax, QVector<double> y_ax, int plt_
 
 
 QVector<double> MainWindow::load_points(QString query, int div){
+    /**
+    * @brief This function select pata points to use later for drawing graph. 
+    * The function has parameters as follows:
+    *
+    * @param query
+    * This parameter is a QString query.
+    * 
+    * @param div
+    * This parameter indicates if the data should be devided by cpu cores number.
+    */
     QSqlQuery qry;
 
     if(!qry.exec(query)){
